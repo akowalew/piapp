@@ -1,0 +1,5 @@
+void InitTarget(void) {
+  Report("Initializing for Raspberry Pi 3B+");
+  CORESIGHT_CoreBaseAddr = 0x80010000;
+  JLINK_ExecCommand("CORESIGHT_SetCTICoreBaseAddr=0x80018000");
+}

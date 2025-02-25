@@ -1,17 +1,18 @@
 #include "platform.c"
 
+#include "common.c"
 #include "bcm2837.c"
 #include "console.c"
 
 int main(void)
 {
+	int Num = 0;
 	ConsoleInit();
-	ConsolePrint("Hello world, type something:\r\n");
-
+	ConsolePrint("Yo bitchaaaa!, Hello world, type something:\r\n");
 	while(1)
 	{
+		ConsolePrintf("[%d] Type something you bitch: ", Num);
 		char C = ConsoleGetc();
-		ConsolePrint("You have typed: ");
 		ConsolePut(C);
 		ConsolePut('\r');
 		ConsolePut('\n');
@@ -24,5 +25,7 @@ int main(void)
 				PiReboot();
 			}
 		}
+
+		Num++;
 	}
 }

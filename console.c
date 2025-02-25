@@ -45,6 +45,88 @@ static void ConsoleSend(const void* Data, unsigned int Size)
 	}
 }
 
+static unsigned
+FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args)
+{
+	char* BufferAt = Buffer;
+
+	while(1)
+	{
+		char C1 = *(Format++);
+		switch(C1)
+		{
+			case 0:
+			{
+				goto finish;
+			} break;
+
+			case '%':
+			{
+				char C2 = *(Format++);
+				switch(C2)
+				{
+					case 0:
+					{
+						goto finish;
+					} break;
+
+					case 'd':
+					{
+						int Value = va_arg(Args, int);
+						int Negative = 0;
+						if(Value < 0)
+						{
+							Negative = 1;
+							Value = -Value;
+						}
+
+						char Tmp[32];
+						char* TmpAt = Tmp;
+						*(TmpAt++) = 0;
+						do
+						{
+							unsigned Num = Value / 10;
+							unsigned Rem = Value - Num * 10;
+							*(TmpAt++) = Rem + '0';
+							Value = Num;
+						} while(Value);
+
+						if(Negative)
+						{
+							*(BufferAt++) = '-';
+						}
+
+						char C;
+						while((C = *(--TmpAt)) != 0)
+						{
+							*(BufferAt++) = C;
+						}
+					} break;
+
+					case '%':
+					{
+						*(BufferAt++) = C2;
+					} break;
+
+					default:
+					{
+						// TODO: Unknown modifier
+					} break;
+				}
+			} break;
+
+			default:
+			{
+				*(BufferAt++) = C1;
+			} break;
+		}
+	}
+
+finish:
+	return (BufferAt - Buffer);
+}
+
+
 static void ConsolePrint(const char* String)
 {
 	char C;
@@ -58,6 +140,18 @@ static void ConsolePrint(const char* String)
 
 		*AUX_MU_IO = C;
 	}
+}
+
+static void ConsolePrintf(const char* Format, ...)
+{
+	char Buffer[256];
+
+	va_list Args;
+	va_start(Args, Format);
+	unsigned Count = FormatStringArgs(Buffer, sizeof(Buffer), Format, Args);
+	va_end(Args);
+
+	ConsoleSend(Buffer, Count);
 }
 
 static char ConsoleGetc(void)
