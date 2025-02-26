@@ -8,10 +8,10 @@ int main(void)
 {
 	int Num = 0;
 	ConsoleInit();
-	ConsolePrint("Yo bitchaaaa!, Hello world, type something:\r\n");
+	ConsolePrint("Hello world, type something:\r\n");
 	while(1)
 	{
-		ConsolePrintf("[%d] Type something you bitch: ", Num);
+		ConsolePrintf("[%d] Type something: ", Num);
 		char C = ConsoleGetc();
 		ConsolePut(C);
 		ConsolePut('\r');

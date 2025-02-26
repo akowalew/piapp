@@ -3,3 +3,8 @@ void InitTarget(void) {
   CORESIGHT_CoreBaseAddr = 0x80010000;
   JLINK_ExecCommand("CORESIGHT_SetCTICoreBaseAddr=0x80018000");
 }
+
+void AfterResetTarget(void) {
+  Report("AfterResetTarget JLINKSCRIPT Setting PC4");
+  JLINK_CPU_WriteReg(33, 0x80000);
+}

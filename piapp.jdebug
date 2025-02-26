@@ -5,8 +5,8 @@
 **********************************************************************
 
 File          : /home/adamk/piapp/piapp.jdebug
-Created       : 25 Feb 2025 14:46
-Ozone Version : V3.38c
+Created       : 26 Feb 2025 11:15
+Ozone Version : V3.34
 */
 
 /*********************************************************************
@@ -25,11 +25,12 @@ void OnProjectLoad (void) {
   Project.SetDevice ("Cortex-A53");
   Project.SetHostIF ("USB", "852005481");
   Project.SetTargetIF ("JTAG");
-  Project.SetTIFSpeed ("Automatic");
+  Project.SetTIFSpeed ("20 MHz");
   Project.SetJLinkScript ("/home/adamk/piapp/jlinkscript");
   Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
   Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-A53_AArch64.svd");
+  Project.SetJLinkLogFile ("/home/adamk/piapp/out/jlinklog");
   //
   // User settings
   //
@@ -314,19 +315,6 @@ void AfterTargetDownload (void) {
 
 /*********************************************************************
 *
-*       OnDebugStartBreakSymbolReached
-*
-* Function description
-*   Called when program execution has reached/passed
-*   the symbol to be breaked at during debug start. Optional.
-*
-**********************************************************************
-*/
-//void OnDebugStartBreakSymReached (void) {
-//}
-
-/*********************************************************************
-*
 *       _SetupTarget
 *
 * Function description
@@ -338,29 +326,29 @@ void AfterTargetDownload (void) {
 **********************************************************************
 */
 void _SetupTarget(void) {
-  U64 PC;
-  int ElfClass;
+  // U64 PC;
+  // int ElfClass;
 
-  ElfClass = Elf.GetFileClass();
-  //
-  // Set up entry point PC
-  //
-  PC = Elf.GetEntryPointPC();
-  if (PC != 0xFFFFFFFFFFFFFFFF) {
-    if (ElfClass == ELF_CLASS_64) {
-      //
-      // AArch64
-      //
-      Target.SetReg("PC", PC);
-    } else if (ElfClass == ELF_CLASS_32) {
-      //
-      // AArch32
-      //
-      Target.SetReg("R15 (PC)", PC);
-    } else {
-      Util.Error("Project script error: failed to set up initial PC", 1);
-    }
-  } else {
-    Util.Error("Project script error: failed to set up initial PC", 1);
-  }
+  // ElfClass = Elf.GetFileClass();
+  // //
+  // // Set up entry point PC
+  // //
+  // PC = Elf.GetEntryPointPC();
+  // if (PC != 0xFFFFFFFFFFFFFFFF) {
+  //   if (ElfClass == ELF_CLASS_64) {
+  //     //
+  //     // AArch64
+  //     //
+  //     Target.SetReg("PC", PC);
+  //   } else if (ElfClass == ELF_CLASS_32) {
+  //     //
+  //     // AArch32
+  //     //
+  //     Target.SetReg("R15 (PC)", PC);
+  //   } else {
+  //     Util.Error("Project script error: failed to set up initial PC", 1);
+  //   }
+  // } else {
+  //   Util.Error("Project script error: failed to set up initial PC", 1);
+  // }
 }
