@@ -7,15 +7,25 @@
 int main(void)
 {
 	int Num = 0;
+
 	ConsoleInit();
-	ConsolePrint("Hello world, type something:\r\n");
+	ConsolePrint("Hello world\r\n");
+
+	u64 SerialNumber = 0;
+	if(PiReadSerialNumber(&SerialNumber))
+	{
+		ConsolePrintf("Serial number is: 0x%X\n", SerialNumber);
+	}
+	else
+	{
+		ConsolePrintf("Failed to retrieve serial number\r\n");
+	}
+
 	while(1)
 	{
 		ConsolePrintf("[%d] Type something: ", Num);
 		char C = ConsoleGetc();
-		ConsolePut(C);
-		ConsolePut('\r');
-		ConsolePut('\n');
+		ConsolePrintf("%c\r\n", C);
 		if(C == 'r')
 		{
 			while(1)

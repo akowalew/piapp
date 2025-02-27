@@ -1,7 +1,5 @@
 
 
-Breakpoint=/home/adamk/piapp/main.c:3:12, State=BP_STATE_DISABLED
-Breakpoint=/home/adamk/piapp/main.c:11:1, State=BP_STATE_DISABLED
 OpenDocument="main.c", FilePath="/home/adamk/piapp/main.c", Line=0
 OpenWindow="Call Stack", DockArea=LEFT, x=0, y=0, w=386, h=329, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=543, h=321, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
