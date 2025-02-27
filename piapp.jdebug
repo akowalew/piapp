@@ -25,7 +25,7 @@ void OnProjectLoad (void) {
   Project.SetDevice ("Cortex-A53");
   Project.SetHostIF ("USB", "852005481");
   Project.SetTargetIF ("JTAG");
-  Project.SetTIFSpeed ("20 MHz");
+  Project.SetTIFSpeed ("15 MHz");
   Project.SetJLinkScript ("/home/adamk/piapp/jlinkscript");
   Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
   Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
