@@ -1,15 +1,22 @@
 #include "platform.h"
-
-#include "bcm2837_lpa.h"
+#include "platform.c"
+#include "common.h"
 #include "common.c"
 #include "bcm2837.h"
 #include "bcm2837.c"
+#include "mbox.h"
+#include "mbox.c"
+#include "gpio.h"
+#include "gpio.c"
 #include "uart1.h"
 #include "uart1.c"
 #include "uart0.c"
 #include "uart0.h"
 #include "rng.h"
 #include "rng.c"
+#include "pm.h"
+#include "pm.c"
+#include "console.h"
 #include "console.c"
 
 int main(void)
@@ -17,7 +24,7 @@ int main(void)
 	ConsoleInit();
 
 	u64 SerialNumber = 0;
-	if(PiGetBoardSerialNumber(&SerialNumber))
+	if(MboxGetBoardSerialNumber(&SerialNumber))
 	{
 		ConsolePrintf("Serial number is: 0x%X\n", SerialNumber);
 	}
@@ -27,7 +34,7 @@ int main(void)
 	}
 
 	u32 BoardModel = 0;
-	if(PiGetBoardModel(&BoardModel))
+	if(MboxGetBoardModel(&BoardModel))
 	{
 		ConsolePrintf("Board model is: 0x%x\n", BoardModel);
 	}
@@ -37,7 +44,7 @@ int main(void)
 	}
 
 	u64 BoardMacAddress = 0;
-	if(PiGetBoardMacAddress(&BoardMacAddress))
+	if(MboxGetBoardMacAddress(&BoardMacAddress))
 	{
 		ConsolePrintf("Board mac address is: 0x%x\n", BoardMacAddress);
 	}
@@ -51,7 +58,9 @@ int main(void)
 	for(int Num = 0; ; Num++)
 	{
 		u32 Random = RNGRead();
-		ConsolePrintf("[%d] [%u] Type something: ", Num, Random);
+		u32 Temperature = 0;
+		Assert(MboxGetTemperature(&Temperature));
+		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature);
 		char C = ConsoleGet();
 		ConsolePrintf("%c\r\n", C);
 		if(C == 'r')
@@ -60,7 +69,7 @@ int main(void)
 			{
 				ConsolePrintf("Rebooting...\r\n");
 				BusyWait(100000);
-				PiReboot();
+				Reboot();
 			}
 		}
 	}

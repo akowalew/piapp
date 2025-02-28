@@ -22,6 +22,8 @@ static b32 UART1Init(void)
     UART1->BAUD = 270; // 115200 baud
     UART1->CNTL = UART1_CNTL_RX_ENABLE_Msk | UART1_CNTL_TX_ENABLE_Msk; // Enable TX and RX
 
+    Result = 1;
+
     return Result;
 }
 

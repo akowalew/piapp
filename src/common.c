@@ -1,3 +1,11 @@
+static void BusyWait(unsigned int Delay)
+{
+	while(Delay--)
+	{
+		// Do nothing
+	}
+}
+
 static unsigned
 FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args)
 {

@@ -86,7 +86,22 @@ typedef enum {
 
 /** @} */ /* End of group Configuration_of_CMSIS */
 
-#include "core_ca72.h"                          /*!< ARM Cortex-A72 processor and core peripherals                             */
+
+/* IO definitions (access restrictions to peripheral registers) */
+#ifdef __cplusplus
+  #define   __I     volatile             /*!< \brief Defines 'read only' permissions */
+#else
+  #define   __I     volatile const       /*!< \brief Defines 'read only' permissions */
+#endif
+#define     __O     volatile             /*!< \brief Defines 'write only' permissions */
+#define     __IO    volatile             /*!< \brief Defines 'read / write' permissions */
+
+/* following defines should be used for structure members */
+#define     __IM     volatile const      /*!< \brief Defines 'read only' structure member permissions */
+#define     __OM     volatile            /*!< \brief Defines 'write only' structure member permissions */
+#define     __IOM    volatile            /*!< \brief Defines 'read / write' structure member permissions */
+#define RESERVED(N, T) T RESERVED##N;    // placeholder struct members used for "reserved" areas
+
 
 #ifndef __IM                                    /*!< Fallback for older CMSIS versions                                         */
   #define __IM   __I
@@ -731,6 +746,8 @@ typedef struct {                                /*!< EMMC Structure             
 /** @addtogroup Device_Peripheral_peripheralAddr
   * @{
   */
+
+#define MMIO_BASE       0x3F000000
 
 #define MBOX_BASE                   0x3F00B880UL
 #define CM_PCM_BASE                 0x3F101098UL

@@ -2,12 +2,12 @@
 <device schemaVersion="1.3" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="CMSIS-SVD.xsd">
     <vendor>BROADCOM</vendor>
     <vendorID>BRCM</vendorID>
-    <name>bcm2837_lpa</name>
+    <name>bcm2837</name>
     <series>BCM2837</series>
     <version>A</version>
     <description>BCM2837 found in the Raspberry Pi 3 and Zero 2W</description>
     <cpu>
-        <name>CA72</name>
+        <name>CA53</name>
         <revision>r0p0</revision>
         <endian>little</endian>
         <nvicPrioBits>2</nvicPrioBits>

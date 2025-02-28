@@ -4,7 +4,7 @@ static b32 UART0Init(void)
 
     Mbox[0] = 9 * 4;
     Mbox[1] = MBOX_REQUEST;
-    Mbox[2] = MBOX_TAG_SETCLOCKRATE;
+    Mbox[2] = MBOX_TAG_SET_CLOCK_RATE;
     Mbox[3] = 3 * 4;
     Mbox[4] = 8;
     Mbox[5] = MBOX_CLOCK_UART; // UART Clock

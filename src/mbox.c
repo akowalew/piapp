@@ -1,6 +1,13 @@
 static volatile u32 Aligned(16) Mbox[36];
 
-static u32 MboxCall(u8 Channel)
+static b32 MboxInit(void)
+{
+    b32 Result = 1;
+
+    return Result;
+}
+
+static b32 MboxCall(u8 Channel)
 {
     u32 Status;
     u32 Response;
@@ -33,13 +40,13 @@ static u32 MboxCall(u8 Channel)
     }
 }
 
-static u32 PiGetBoardSerialNumber(u64* Value)
+static b32 MboxGetBoardSerialNumber(u64* Value)
 {
     u32 Result = 0;
 
     Mbox[0] = 8 * 4;
     Mbox[1] = MBOX_REQUEST;
-    Mbox[2] = MBOX_TAG_GETSERIAL;
+    Mbox[2] = MBOX_TAG_GET_BOARD_SERIAL;
     Mbox[3] = 8;
     Mbox[4] = 0;
     Mbox[5] = 0;
@@ -54,13 +61,13 @@ static u32 PiGetBoardSerialNumber(u64* Value)
     return Result;
 }
 
-static b32 PiGetBoardModel(u32* Value)
+static b32 MboxGetBoardModel(u32* Value)
 {
     u32 Result = 0;
 
     Mbox[0] = 7 * 4;
     Mbox[1] = MBOX_REQUEST;
-    Mbox[2] = MBOX_TAG_GETBOARDMODEL;
+    Mbox[2] = MBOX_TAG_GET_BOARD_MODEL;
     Mbox[3] = 4;
     Mbox[4] = 0;
     Mbox[5] = 0;
@@ -74,13 +81,13 @@ static b32 PiGetBoardModel(u32* Value)
     return Result;
 }
 
-static b32 PiGetBoardMacAddress(u64* Value)
+static b32 MboxGetBoardMacAddress(u64* Value)
 {
     b32 Result;
 
     Mbox[0] = 8 * 4;
     Mbox[1] = MBOX_REQUEST;
-    Mbox[2] = MBOX_TAG_GETBOARDMACADDRESS;
+    Mbox[2] = MBOX_TAG_GET_BOARD_MAC_ADDRESS;
     Mbox[3] = 6;
     Mbox[4] = 0;
     Mbox[5] = 0;
@@ -95,11 +102,24 @@ static b32 PiGetBoardMacAddress(u64* Value)
     return Result;
 }
 
-static void PiReboot(void)
+static b32 MboxGetTemperature(u32* Value)
 {
-	*(volatile uint32_t*)WDOG_RST = PM_PASSWORD | 0x10; // Magic value + reset
-    *(volatile uint32_t*)WDOG_CMD = 0; // Disable watchdog
+    b32 Result;
 
-    *(volatile uint32_t*)PM_RSTC = PM_PASSWORD | PM_RSTC_WRCFG | PM_RSTC_FULLRST;
-    *(volatile uint32_t*)PM_WDOG = PM_PASSWORD | 10; // Short timeout
+    Mbox[0] = 8 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_GET_TEMPERATURE;
+    Mbox[3] = 2 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = 0;
+    Mbox[6] = 0;
+    Mbox[7] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        *Value = Mbox[6];
+
+        Result = 1;
+    }
+
+    return Result;
 }
