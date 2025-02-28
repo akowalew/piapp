@@ -73,8 +73,11 @@ int main(void)
 		ConsolePrintf("FB NOT initialized\n");
 	}
 
-	FBTest();
+	// FBTest();
+	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
 
+	u32 X = 200;
+	u32 Y = 200;
 	for(int Num = 0; ; Num++)
 	{
 		u32 Random = RNGRead();
@@ -83,6 +86,12 @@ int main(void)
 		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature);
 		char C = ConsoleGet();
 		ConsolePrintf("%c\r\n", C);
+		FillRectangle(X, Y, X+50, Y+50, 0x00111111);
+		if(C == 'w') Y -= 10;
+		if(C == 's') Y += 10;
+		if(C == 'a') X -= 10;
+		if(C == 'd') X += 10;
+		FillRectangle(X, Y, X+50, Y+50, 0x00FF00FF);
 		if(C == 'r')
 		{
 			while(1)

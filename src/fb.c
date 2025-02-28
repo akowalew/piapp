@@ -68,6 +68,23 @@ static b32 FBInit(void)
 	return Result;
 }
 
+static void FillRectangle(u32 X1, u32 Y1, u32 X2, u32 Y2, u32 Color)
+{
+	u8* Row = FBData + Y1 * FBPitch + X1 * 4;
+
+	for(u32 Y = Y1; Y <= Y2; Y++)
+	{
+		u32* At = (u32*) Row;
+
+		for(u32 X = X1; X <= X2; X++)
+		{
+			*(At++) = Color;
+		}
+
+		Row += FBPitch;
+	}
+}
+
 #include "assets/homer.h"
 
 static void FBTest(void)
