@@ -25,8 +25,8 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 
 					case 'd':
 					{
-						int Value = va_arg(Args, int);
-						int Negative = 0;
+						i32 Value = va_arg(Args, i32);
+						i32 Negative = 0;
 						if(Value < 0)
 						{
 							Negative = 1;
@@ -38,8 +38,8 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 						*(TmpAt++) = 0;
 						do
 						{
-							unsigned Num = Value / 10;
-							unsigned Rem = Value - Num * 10;
+							u32 Num = Value / 10;
+							u32 Rem = Value - Num * 10;
 							*(TmpAt++) = Rem + '0';
 							Value = Num;
 						} while(Value);
@@ -48,6 +48,28 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 						{
 							*(BufferAt++) = '-';
 						}
+
+						char C;
+						while((C = *(--TmpAt)) != 0)
+						{
+							*(BufferAt++) = C;
+						}
+					} break;
+
+					case 'u':
+					{
+						u32 Value = va_arg(Args, u32);
+
+						char Tmp[32];
+						char* TmpAt = Tmp;
+						*(TmpAt++) = 0;
+						do
+						{
+							u32 Num = Value / 10;
+							u32 Rem = Value - Num * 10;
+							*(TmpAt++) = Rem + '0';
+							Value = Num;
+						} while(Value);
 
 						char C;
 						while((C = *(--TmpAt)) != 0)
