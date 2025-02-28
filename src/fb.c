@@ -74,7 +74,7 @@ static void FBTest(void)
 {
     u32 x,y;
     unsigned char *ptr=FBData;
-    char *data=(void*)header_data_cmap, pixel[4];
+    char *data=(void*)homer_data, pixel[4];
 
     ptr += (FBHeight-homer_height)/2*FBPitch + (FBWidth-homer_width)*2;
     for(y=0;y<homer_height;y++) {
