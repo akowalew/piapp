@@ -18,6 +18,8 @@
 #include "pm.c"
 #include "console.h"
 #include "console.c"
+#include "fb.h"
+#include "fb.c"
 
 int main(void)
 {
@@ -53,7 +55,25 @@ int main(void)
 		ConsolePrintf("Failed to retrieve board mac address\n");
 	}
 
-	RNGInit();
+	if(RNGInit())
+	{
+		ConsolePrintf("RNG initialized\n");
+	}
+	else
+	{
+		ConsolePrintf("RNG NOT initialized\n");
+	}
+
+	if(FBInit())
+	{
+		ConsolePrintf("FB initialized %dx%d [%d pitch] [rgb=%d]\n", FBWidth, FBHeight, FBPitch, FBRGB);
+	}
+	else
+	{
+		ConsolePrintf("FB NOT initialized\n");
+	}
+
+	FBTest();
 
 	for(int Num = 0; ; Num++)
 	{

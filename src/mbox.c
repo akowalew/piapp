@@ -1,4 +1,4 @@
-static volatile u32 Aligned(16) Mbox[36];
+static volatile u32 Aligned(16) Mbox[128];
 
 static b32 MboxInit(void)
 {

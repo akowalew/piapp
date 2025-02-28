@@ -1,9 +1,7 @@
 
 
-OpenDocument="muart.c", FilePath="/home/adamk/piapp/muart.c", Line=0
-OpenDocument="", FilePath="", Line=0
+OpenDocument="main.c", FilePath="/home/adamk/piapp/src/main.c", Line=0
 OpenDocument="common.c", FilePath="/home/adamk/piapp/src/common.c", Line=0
-OpenDocument="", FilePath="", Line=0
 OpenWindow="Call Stack", DockArea=LEFT, x=0, y=0, w=386, h=329, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=543, h=321, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
 OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=543, h=342, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
@@ -17,10 +15,10 @@ TableHeader="Break & Tracepoints", SortCol="Location", SortOrder="DESCENDING", V
 TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type"], ColWidths=[232;554;105;43;100]
 TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Source"], ColWidths=[210;176]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[162;241;332;272]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[162;241;332;188]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[27;27;27;27]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location"], ColWidths=[100;251;609]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[27;27;27;26]
 WatchedExpression="Mask", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
 WatchedExpression="Value", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
 WatchedExpression="Pos", Window=Watched Data 1
