@@ -5,7 +5,7 @@ CFLAGS="$CFLAGS -march=armv8-a+nosimd -mtune=cortex-a53 -gdwarf-2 -g3"
 OFLAGS="$OFLAGS -O0 -ffreestanding -nostdlib -ffunction-sections -fdata-sections -static"
 WFLAGS="$WFLAGS -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Wundef -Wshadow"
 XFLAGS="$XFLAGS -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-overlength-strings"
-LFLAGS="$LFLAGS -Wl,-Tlink.ld -Wl,--gc-sections -Wl,--build-id=none"
+LFLAGS="$LFLAGS -Wl,-Tlink.ld -Wl,--gc-sections -Wl,--no-warn-rwx-segments -Wl,--build-id=none"
 IFLAGS="$IFLAGS -I."
 
 mkdir -p out;

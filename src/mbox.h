@@ -59,7 +59,7 @@ typedef enum
 	MBOX_TAG_GET_EDID_BLOCK_DISPLAY =                 0x00030023,
 	MBOX_TAG_GET_DOMAIN_STATE =                       0x00030030,
 	MBOX_TAG_GET_THROTTLED =                          0x00030046,
-	MBOX_TAG_GET_CLOCK_MEASURED =                     0x00030047,
+	MBOX_TAG_GET_CLOCK_RATE_MEASURED =                0x00030047,
 	MBOX_TAG_NOTIFY_REBOOT =                          0x00030048,
 	MBOX_TAG_SET_CLOCK_STATE =                        0x00038001,
 	MBOX_TAG_SET_CLOCK_RATE =                         0x00038002,
@@ -159,3 +159,25 @@ typedef enum
 #define MBOX_CLOCK_EMMC2        0x00000000c
 #define MBOX_CLOCK_M2MC         0x00000000d
 #define MBOX_CLOCK_PIXEL_BVB    0x00000000e
+
+static const char* MboxClockNames[] =
+{
+	"reserved",
+	"EMMC",
+	"UART",
+	"ARM",
+	"CORE",
+	"V3D",
+	"H264",
+	"ISP",
+	"SDRAM",
+	"PIXEL",
+	"PWM",
+	"HEVC",
+	"EMMC2",
+	"M2MC",
+	"PIXEL_BVB",
+};
+
+#define MBOX_GPIO_STATUS_LED 42
+#define MBOX_GPIO_POWER_LED  130

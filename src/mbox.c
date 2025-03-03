@@ -123,3 +123,98 @@ static b32 MboxGetTemperature(u32* Value)
 
     return Result;
 }
+
+static b32 MboxSetGpioState(u32 Gpio, u32 State)
+{
+    b32 Result = 0;
+
+    Mbox[0] = 8 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_SET_GPIO_STATE;
+    Mbox[3] = 2 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = Gpio;
+    Mbox[6] = State;
+    Mbox[7] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        Result = 1;
+    }
+
+    return Result;
+}
+
+static b32 MboxGetClockRate(u32 Clock, u32* Rate)
+{
+    b32 Result = 0;
+
+    Mbox[0] = 8 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_GET_CLOCK_RATE;
+    Mbox[3] = 2 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = Clock;
+    Mbox[6] = 0;
+    Mbox[7] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        if(Mbox[5] == Clock)
+        {
+            *Rate = Mbox[6];
+
+            Result = 1;
+        }
+    }
+
+    return Result;
+}
+
+static b32 MboxGetMaxClockRate(u32 Clock, u32* Rate)
+{
+    b32 Result = 0;
+
+    Mbox[0] = 8 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_GET_MAX_CLOCK_RATE;
+    Mbox[3] = 2 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = Clock;
+    Mbox[6] = 0;
+    Mbox[7] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        if(Mbox[5] == Clock)
+        {
+            *Rate = Mbox[6];
+
+            Result = 1;
+        }
+    }
+
+    return Result;
+}
+
+static b32 MboxGetClockRateMeasured(u32 Clock, u32* Rate)
+{
+    b32 Result = 0;
+
+    Mbox[0] = 8 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_GET_CLOCK_RATE_MEASURED;
+    Mbox[3] = 2 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = Clock;
+    Mbox[6] = 0;
+    Mbox[7] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        if(Mbox[5] == Clock)
+        {
+            *Rate = Mbox[6];
+
+            Result = 1;
+        }
+    }
+
+    return Result;
+}

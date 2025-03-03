@@ -21,7 +21,6 @@ static void BusyWaitMsCpu(unsigned int Millis)
 	register u64 Freq, Start, Time;
 	asm volatile("mrs %0, cntfrq_el0" : "=r"(Freq));
 	asm volatile("mrs %0, cntpct_el0" : "=r"(Start));
-
 	u64 Counts = ((Freq / 1000) * Millis) / 1000;
 
 	do
@@ -48,12 +47,38 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 
 			case '%':
 			{
+				u32 Padding = 0;
 				char C2 = *(Format++);
 				switch(C2)
 				{
 					case 0:
 					{
 						goto finish;
+					} break;
+
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+					{
+						Padding = C2 - '0';
+						// TODO: Parse next format
+					} break;
+
+					case 's':
+					{
+						const char* String = va_arg(Args, const char*);
+
+						char C;
+						while((C = *(String++)) != 0)
+						{
+							*(BufferAt++) = C;
+						}
 					} break;
 
 					case 'd':

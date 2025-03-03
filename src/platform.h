@@ -16,5 +16,5 @@ typedef u32 b32;
 
 #define Aligned(x) __attribute__((aligned(x)))
 #define BRK(x) asm("brk #0");
-
 #define Assert(x) if(!(x)) { while(1){BRK();} }
+#define ArrayCount(x) sizeof(x)/sizeof(x[0])

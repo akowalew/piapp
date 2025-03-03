@@ -80,6 +80,7 @@ int main(void)
 	u32 X = 200;
 	u32 Y = 200;
 	int Size = 50;
+	u32 State = 0;
 	for(int Num = 0; ; Num++)
 	{
 		if(!ConsolePeek(&C))
@@ -90,7 +91,45 @@ int main(void)
 		u32 Random = RNGRead();
 		u32 Temperature = 0;
 		Assert(MboxGetTemperature(&Temperature));
-		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature);
+
+		ConsolePrintf("-- Clock -- Current Rate -- Measured -- Maximum\n");
+		for(u32 Clock = 0; Clock < 0xe; Clock++)
+		{
+			ConsolePrintf("#%x (%s):", Clock, MboxClockNames[Clock]);
+
+			u32 Rate = 0;
+
+			if(MboxGetClockRate(Clock, &Rate))
+			{
+				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+			}
+			else
+			{
+				ConsolePrintf("BAD");
+			}
+
+			if(MboxGetMaxClockRate(Clock, &Rate))
+			{
+				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+			}
+			else
+			{
+				ConsolePrintf("BAD");
+			}
+
+			if(MboxGetClockRateMeasured(Clock, &Rate))
+			{
+				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+			}
+			else
+			{
+				ConsolePrintf("BAD");
+			}
+
+			ConsolePrintf("\n");
+		}
+
+		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature / 1000);
 		ConsolePrintf("%c\r\n", C);
 		FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
 		if(C == 'w') Y -= 10;
@@ -109,6 +148,10 @@ int main(void)
 				Reboot();
 			}
 		}
+
+		Assert(MboxSetGpioState(MBOX_GPIO_STATUS_LED, State));
+		Assert(MboxSetGpioState(MBOX_GPIO_POWER_LED, State));
+		State = State ? 1 : 0;
 
 		BusyWaitMsCpu(1000000);
 
