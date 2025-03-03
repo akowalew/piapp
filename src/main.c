@@ -1,9 +1,9 @@
 #include "platform.h"
 #include "platform.c"
-#include "common.h"
-#include "common.c"
 #include "bcm2837.h"
 #include "bcm2837.c"
+#include "common.h"
+#include "common.c"
 #include "mbox.h"
 #include "mbox.c"
 #include "gpio.h"
@@ -76,22 +76,30 @@ int main(void)
 	// FBTest();
 	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
 
+	char C;
 	u32 X = 200;
 	u32 Y = 200;
+	int Size = 50;
 	for(int Num = 0; ; Num++)
 	{
+		if(!ConsolePeek(&C))
+		{
+			C = 'd';
+		}
+
 		u32 Random = RNGRead();
 		u32 Temperature = 0;
 		Assert(MboxGetTemperature(&Temperature));
 		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature);
-		char C = ConsoleGet();
 		ConsolePrintf("%c\r\n", C);
-		FillRectangle(X, Y, X+50, Y+50, 0x00111111);
+		FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
 		if(C == 'w') Y -= 10;
 		if(C == 's') Y += 10;
 		if(C == 'a') X -= 10;
 		if(C == 'd') X += 10;
-		FillRectangle(X, Y, X+50, Y+50, 0x00FF00FF);
+		if(C == '+') Size += 10;
+		if(C == '-') Size -= 10;
+		FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
 		if(C == 'r')
 		{
 			while(1)
@@ -101,5 +109,9 @@ int main(void)
 				Reboot();
 			}
 		}
+
+		BusyWaitMsCpu(1000000);
+
+		// C = ConsoleGet();
 	}
 }

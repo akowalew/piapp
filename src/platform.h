@@ -18,4 +18,3 @@ typedef u32 b32;
 #define BRK(x) asm("brk #0");
 
 #define Assert(x) if(!(x)) { while(1){BRK();} }
-

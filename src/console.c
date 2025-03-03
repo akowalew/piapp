@@ -1,18 +1,25 @@
 static void ConsolePut(char C)
 {
-	UART1Put(C);
+	UART0Put(C);
+}
+
+static b32 ConsolePeek(char* C)
+{
+    b32 Result = UART0Peek(C);
+
+    return Result;
 }
 
 static char ConsoleGet(void)
 {
-    char Result = UART1Get();
+    char Result = UART0Get();
 
     return Result;
 }
 
 static void ConsoleSend(const void* Data, unsigned int Size)
 {
-	UART1Send(Data, Size);
+	UART0Send(Data, Size);
 }
 
 static void ConsolePrintf(const char* Format, ...)
@@ -24,14 +31,14 @@ static void ConsolePrintf(const char* Format, ...)
     unsigned Count = FormatStringArgs(Buffer, sizeof(Buffer), Format, Args);
     va_end(Args);
 
-    UART1Send(Buffer, Count);
+    UART0Send(Buffer, Count);
 }
 
 static b32 ConsoleInit(void)
 {
-	b32 Result = UART1Init();
+	b32 Result = UART0Init();
 
-	ConsolePrintf("\nConsole initialised with UART1\n");
+	ConsolePrintf("\nConsole initialised with UART0\n");
 
 	return Result;
 }

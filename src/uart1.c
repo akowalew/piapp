@@ -27,6 +27,20 @@ static b32 UART1Init(void)
     return Result;
 }
 
+static b32 UART1Peek(char* C)
+{
+    b32 Result = 0;
+
+    if(UART1->LSR & UART1_LSR_DATA_READY_Msk)
+    {
+        *C = UART1->IO;
+
+        Result = 1;
+    }
+
+    return Result;
+}
+
 static void UART1Put(char C)
 {
     while(!(UART1->LSR & UART1_LSR_TX_EMPTY_Msk))

@@ -46,6 +46,20 @@ static void UART0Put(char C)
     UART0->DR = C;
 }
 
+static b32 UART0Peek(char* C)
+{
+    b32 Result = 0;
+
+    if(!(UART0->FR & UART0_FR_RXFE_Msk))
+    {
+        *C = UART0->DR;
+
+        Result = 1;
+    }
+
+    return Result;
+}
+
 static char UART0Get(void)
 {
     char Result = 0;

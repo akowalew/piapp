@@ -6,6 +6,31 @@ static void BusyWait(unsigned int Delay)
 	}
 }
 
+static void BusyWaitMs(unsigned int Millis)
+{
+	u64 Time;
+	u64 Start = GetSystemTimer();
+	while((Time = GetSystemTimer()) - Start < Millis)
+	{
+		// Do nothing
+	}
+}
+
+static void BusyWaitMsCpu(unsigned int Millis)
+{
+	register u64 Freq, Start, Time;
+	asm volatile("mrs %0, cntfrq_el0" : "=r"(Freq));
+	asm volatile("mrs %0, cntpct_el0" : "=r"(Start));
+
+	u64 Counts = ((Freq / 1000) * Millis) / 1000;
+
+	do
+	{
+		asm volatile("mrs %0, cntpct_el0" : "=r"(Time));
+	}
+	while((Time - Start) < Counts);
+}
+
 static unsigned
 FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args)
 {
