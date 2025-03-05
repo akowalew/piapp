@@ -1,7 +1,0 @@
-enable_jtag_gpio=1
-framebuffer_width=1024
-framebuffer_height=768
-framebuffer_depth=32
-hdmi_force_hotplug=1
-hdmi_group=2
-hdmi_mode=16

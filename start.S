@@ -1,5 +1,3 @@
-#include "start.h"
-
 .section ".text.boot"
 
 .global _start

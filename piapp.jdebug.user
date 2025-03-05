@@ -1,29 +1,20 @@
 
 
-OpenDocument="uart1.c", FilePath="/home/adamk/piapp/src/uart1.c", Line=8
-OpenDocument="main.c", FilePath="/home/adamk/piapp/src/main.c", Line=9
-OpenDocument="common.c", FilePath="/home/adamk/piapp/src/common.c", Line=0
-OpenWindow="Call Stack", DockArea=LEFT, x=0, y=0, w=386, h=315, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=2, w=543, h=242, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=543, h=154, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Break & Tracepoints", DockArea=LEFT, x=0, y=1, w=386, h=424, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VectorCatchIndexMask=0
-OpenWindow="Memory 1", DockArea=RIGHT, x=0, y=1, w=543, h=337, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, EditorAddress=0x90EA0
-OpenWindow="Global Data", DockArea=BOTTOM, x=1, y=0, w=714, h=247, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Local Data", DockArea=BOTTOM, x=1, y=0, w=714, h=247, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=BOTTOM, x=0, y=0, w=960, h=247, TabPos=0, TopOfStack=1, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=960, h=247, TabPos=1, TopOfStack=0, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+
+OpenDocument="main.c", FilePath="/home/adamk/piapp2/main.c", Line=0
+OpenWindow="Call Stack", DockArea=LEFT, x=0, y=0, w=290, h=302, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Registers 1", DockArea=RIGHT, x=0, y=1, w=350, h=297, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, FilteredItems=[], RefreshRate=1
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=350, h=312, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Break & Tracepoints", DockArea=LEFT, x=0, y=1, w=290, h=307, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VectorCatchIndexMask=0
+OpenWindow="Local Data", DockArea=BOTTOM, x=1, y=0, w=713, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=961, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location"], ColWidths=[100;251;609]
-TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type"], ColWidths=[232;554;105;43;100]
-TableHeader="Global Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type";"Scope"], ColWidths=[100;187;100;100;100;127]
 TableHeader="Vector Catches", SortCol="", SortOrder="ASCENDING", VisibleCols=["";"Vector Catch";"Description"], ColWidths=[50;300;500]
-TableHeader="Break & Tracepoints", SortCol="Location", SortOrder="DESCENDING", VisibleCols=["";"Location"], ColWidths=[49;337]
-TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Source"], ColWidths=[210;176]
+TableHeader="Break & Tracepoints", SortCol="Location", SortOrder="DESCENDING", VisibleCols=["";"Location"], ColWidths=[49;241]
+TableHeader="Local Data", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Location";"Size";"Type"], ColWidths=[232;554;105;43;100]
+TableHeader="Call Stack", SortCol="Function", SortOrder="ASCENDING", VisibleCols=["Function";"Source"], ColWidths=[210;100]
 TableHeader="Power Sampling", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[162;241;332;188]
+TableHeader="Registers 1", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[162;241;332;217]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[27;27;27;26]
-WatchedExpression="Mask", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
-WatchedExpression="Value", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
-WatchedExpression="Pos", Window=Watched Data 1
-WatchedExpression="0xF << Pos", Window=Watched Data 1
+WatchedExpression="GlobalDupa", Window=Watched Data 1
