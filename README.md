@@ -5,7 +5,7 @@ Bare metal experiments on Raspberry Pi 3B+
 ## Building
 
 ```sh
-./build.sh
+./build.sh --full
 ```
 
 ## Running
