@@ -218,3 +218,24 @@ static b32 MboxGetClockRateMeasured(u32 Clock, u32* Rate)
 
     return Result;
 }
+
+static b32 MboxSetClockRate(u32 Clock, u32 Rate, u32 SkipSettingTurbo)
+{
+    b32 Result = 0;
+
+    Mbox[0] = 9 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_SET_CLOCK_RATE;
+    Mbox[3] = 3 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = Clock;
+    Mbox[6] = Rate;
+    Mbox[7] = SkipSettingTurbo;
+    Mbox[8] = MBOX_TAG_LAST;
+    if(MboxCall(MBOX_CH_PROP))
+    {
+        Result = 1;
+    }
+
+    return Result;
+}

@@ -24,6 +24,7 @@ static void ConsoleSend(const void* Data, unsigned int Size)
 
 static void ConsolePrintf(const char* Format, ...)
 {
+#if 1
     char Buffer[256];
 
     va_list Args;
@@ -32,6 +33,7 @@ static void ConsolePrintf(const char* Format, ...)
     va_end(Args);
 
     UART0Send(Buffer, Count);
+#endif
 }
 
 static b32 ConsoleInit(void)

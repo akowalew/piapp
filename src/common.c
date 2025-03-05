@@ -16,18 +16,34 @@ static void BusyWaitMs(unsigned int Millis)
 	}
 }
 
+inline static u64 ReadCpuCounter(void)
+{
+	register u64 Result;
+
+	asm volatile("mrs %0, cntpct_el0" : "=r" (Result));
+
+	return Result;
+}
+
+inline static u64 ReadCpuFrequency(void)
+{
+	register u64 Result;
+
+	asm volatile("mrs %0, cntfrq_el0" : "=r" (Result));
+
+	return Result;
+}
+
 static void BusyWaitMsCpu(unsigned int Millis)
 {
-	register u64 Freq, Start, Time;
-	asm volatile("mrs %0, cntfrq_el0" : "=r"(Freq));
-	asm volatile("mrs %0, cntpct_el0" : "=r"(Start));
-	u64 Counts = ((Freq / 1000) * Millis) / 1000;
-
-	do
+	u64 Now;
+	u64 Start = ReadCpuCounter();
+	u64 Frequency = ReadCpuFrequency();
+	u64 Counts = ((Frequency / 1000) * Millis) / 1000;
+	while((Now = ReadCpuCounter()) - Start < Counts)
 	{
-		asm volatile("mrs %0, cntpct_el0" : "=r"(Time));
+		// Do nothing
 	}
-	while((Time - Start) < Counts);
 }
 
 static unsigned

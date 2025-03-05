@@ -23,122 +23,57 @@
 
 int main(void)
 {
+	BusyWait(100000);
 	ConsoleInit();
 
-	u64 SerialNumber = 0;
-	if(MboxGetBoardSerialNumber(&SerialNumber))
-	{
-		ConsolePrintf("Serial number is: 0x%X\n", SerialNumber);
-	}
-	else
-	{
-		ConsolePrintf("Failed to retrieve serial number\r\n");
-	}
-
 	u32 BoardModel = 0;
-	if(MboxGetBoardModel(&BoardModel))
-	{
-		ConsolePrintf("Board model is: 0x%x\n", BoardModel);
-	}
-	else
-	{
-		ConsolePrintf("Failed to retrieve board model\n");
-	}
-
+	u64 SerialNumber = 0;
 	u64 BoardMacAddress = 0;
-	if(MboxGetBoardMacAddress(&BoardMacAddress))
-	{
-		ConsolePrintf("Board mac address is: 0x%x\n", BoardMacAddress);
-	}
-	else
-	{
-		ConsolePrintf("Failed to retrieve board mac address\n");
-	}
 
-	if(RNGInit())
-	{
-		ConsolePrintf("RNG initialized\n");
-	}
-	else
-	{
-		ConsolePrintf("RNG NOT initialized\n");
-	}
+	MboxGetBoardSerialNumber(&SerialNumber);
+	MboxGetBoardModel(&BoardModel);
+	MboxGetBoardMacAddress(&BoardMacAddress);
 
-	if(FBInit())
-	{
-		ConsolePrintf("FB initialized %dx%d [%d pitch] [rgb=%d]\n", FBWidth, FBHeight, FBPitch, FBRGB);
-	}
-	else
-	{
-		ConsolePrintf("FB NOT initialized\n");
-	}
+	BusyWait(100000);
 
-	// FBTest();
+	ConsolePrintf("Serial number is: 0x%X\n", SerialNumber);
+	ConsolePrintf("Board model is: 0x%x\n", BoardModel);
+	ConsolePrintf("Board mac address is: 0x%x\n", BoardMacAddress);
+
+	ConsolePrintf("FB initialized %dx%d [%d pitch] [rgb=%d]\n", FBWidth, FBHeight, FBPitch, FBRGB);
+
+	RNGInit();
+	FBInit();
+	BusyWait(100000);
+
 	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
+
+	if(!MboxSetClockRate(MBOX_CLOCK_ARM, 1400000000, 0))
+	{
+		ConsolePrintf("Failed to set ARM clock rate\n");
+	}
+
+	if(!MboxSetClockRate(MBOX_CLOCK_CORE, 500000000, 0))
+	{
+		ConsolePrintf("Failed to set CORE clock rate\n");
+	}
+	BusyWait(100000);
 
 	char C;
 	u32 X = 200;
 	u32 Y = 200;
-	int Size = 50;
+	int Size = 200;
 	u32 State = 0;
 	for(int Num = 0; ; Num++)
 	{
+		u64 Time1 = ReadCpuCounter();
+		u64 Freq1 = ReadCpuFrequency();
+
 		if(!ConsolePeek(&C))
 		{
 			C = 'd';
 		}
 
-		u32 Random = RNGRead();
-		u32 Temperature = 0;
-		Assert(MboxGetTemperature(&Temperature));
-
-		ConsolePrintf("-- Clock -- Current Rate -- Measured -- Maximum\n");
-		for(u32 Clock = 1; Clock < 0xe; Clock++)
-		{
-			ConsolePrintf("#%x (%-5s):", Clock, MboxClockNames[Clock]);
-
-			u32 Rate = 0;
-
-			if(MboxGetClockRate(Clock, &Rate))
-			{
-				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
-			}
-			else
-			{
-				ConsolePrintf("BAD");
-			}
-
-			if(MboxGetMaxClockRate(Clock, &Rate))
-			{
-				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
-			}
-			else
-			{
-				ConsolePrintf("BAD");
-			}
-
-			if(MboxGetClockRateMeasured(Clock, &Rate))
-			{
-				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
-			}
-			else
-			{
-				ConsolePrintf("BAD");
-			}
-
-			ConsolePrintf("\n");
-		}
-
-		ConsolePrintf("[%d] [%u] [%u^C] Type something: ", Num, Random, Temperature / 1000);
-		ConsolePrintf("%c\r\n", C);
-		FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
-		if(C == 'w') Y -= 10;
-		if(C == 's') Y += 10;
-		if(C == 'a') X -= 10;
-		if(C == 'd') X += 10;
-		if(C == '+') Size += 10;
-		if(C == '-') Size -= 10;
-		FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
 		if(C == 'r')
 		{
 			while(1)
@@ -149,12 +84,63 @@ int main(void)
 			}
 		}
 
-		Assert(MboxSetGpioState(MBOX_GPIO_STATUS_LED, State));
-		Assert(MboxSetGpioState(MBOX_GPIO_POWER_LED, State));
-		State = State ? 1 : 0;
+		if(C == 'n')
+		{
+			u32 Random = RNGRead();
+			ConsolePrintf("Random: %u\n", Random);
+		}
 
-		BusyWaitMsCpu(1000000);
+		if(C == 'T')
+		{
+			u32 Temperature = 0;
+			Assert(MboxGetTemperature(&Temperature));
+			ConsolePrintf("Temperature: %u^C\n", Temperature / 1000);
+		}
 
-		// C = ConsoleGet();
+		if(C == 'c')
+		{
+			ConsolePrintf("--  Clock   --  Curr Rate  --   Measured  --     Maximum\n");
+			ConsolePrintf("--------------------------------------------------------\n");
+			for(u32 Clock = 1; Clock < 0xe; Clock++)
+			{
+				ConsolePrintf("#%x (%-5s):", Clock, MboxClockNames[Clock]);
+
+				u32 ClockRate = 0;
+				u32 MaxClockRate = 0;
+				u32 ClockRateMeasured = 0;
+				MboxGetClockRate(Clock, &ClockRate);
+				MboxGetMaxClockRate(Clock, &MaxClockRate);
+				MboxGetClockRateMeasured(Clock, &ClockRateMeasured);
+
+				ConsolePrintf(" -- %4u.%-03uMHz", ClockRate / 1000000, (ClockRate - (ClockRate / 1000000) * 1000000) / 1000);
+				ConsolePrintf(" -- %4u.%-03uMHz", ClockRateMeasured / 1000000, (ClockRateMeasured - (ClockRateMeasured / 1000000) * 1000000) / 1000);
+				ConsolePrintf(" -- %4u.%-03uMHz", MaxClockRate / 1000000, (MaxClockRate - (MaxClockRate / 1000000) * 1000000) / 1000);
+				ConsolePrintf("\n");
+			}
+		}
+
+		if(C == 'l')
+		{
+			MboxSetGpioState(MBOX_GPIO_STATUS_LED, State);
+			MboxSetGpioState(MBOX_GPIO_POWER_LED, State);
+			State = State ? 1 : 0;
+		}
+
+		FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
+		if(C == 'w') Y -= 10;
+		if(C == 's') Y += 10;
+		if(C == 'a') X -= 10;
+		if(C == 'd') X += 10;
+		if(C == '+') Size += 10;
+		if(C == '-') Size -= 10;
+		FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
+
+		u64 Freq2 = ReadCpuFrequency();
+		u64 Time2 = ReadCpuCounter();
+		if(Freq2 == Freq1)
+		{
+			u64 Total = ((Time2 - Time1) * 1000) / Freq1;
+			ConsolePrintf("Total cycles: %ums (Freq: %u)\n", Total, Freq1);
+		}
 	}
 }
