@@ -4,7 +4,7 @@
 *                         www.segger.com                             *
 **********************************************************************
 
-File          : /home/adamk/piapp/piapp.jdebug
+File          : $(ProjectDir)/piapp.jdebug
 Created       : 26 Feb 2025 11:15
 Ozone Version : V3.34
 */
@@ -26,11 +26,11 @@ void OnProjectLoad (void) {
   Project.SetHostIF ("USB", "852005481");
   Project.SetTargetIF ("JTAG");
   Project.SetTIFSpeed ("15 MHz");
-  Project.SetJLinkScript ("/home/adamk/piapp/jlinkscript");
-  Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
-  Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
+  Project.SetJLinkScript ("$(ProjectDir)/jlinkscript");
+  Project.AddPathSubstitute ("$(ProjectDir)", "$(ProjectDir)");
+  Project.AddPathSubstitute ("$(ProjectDir)", "$(ProjectDir)");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-A53_AArch64.svd");
-  Project.SetJLinkLogFile ("/home/adamk/piapp/out/jlinklog");
+  Project.SetJLinkLogFile ("$(ProjectDir)/out/jlinklog");
   //
   // User settings
   //

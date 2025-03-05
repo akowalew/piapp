@@ -9,7 +9,7 @@ LFLAGS="$LFLAGS -Wl,-Tlink.ld -Wl,--gc-sections -Wl,--no-warn-rwx-segments -Wl,-
 IFLAGS="$IFLAGS -I."
 
 mkdir -p out;
-aarch64-linux-gnu-gcc src/main.c src/start.S -o out/kernel8.elf $DFLAGS $CFLAGS $OFLAGS $WFLAGS $XFLAGS $IFLAGS $LFLAGS
+aarch64-none-elf-gcc src/main.c src/start.S -o out/kernel8.elf $DFLAGS $CFLAGS $OFLAGS $WFLAGS $XFLAGS $IFLAGS $LFLAGS
 if [ "$1" = "--full" ]; then
-	aarch64-linux-gnu-objcopy -O binary out/kernel8.elf tftp/30aa58ed/kernel8.img
+	aarch64-none-elf-objcopy -O binary out/kernel8.elf tftp/30aa58ed/kernel8.img
 fi

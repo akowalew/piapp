@@ -47,140 +47,208 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 
 			case '%':
 			{
-				u32 Padding = 0;
-				char C2 = *(Format++);
-				switch(C2)
+				u32 Width = 0;
+				b32 AlignLeft = 0;
+				char PadChar = ' ';
+				b32 InProgress = 1;
+
+				do
 				{
-					case 0:
+					char C2 = *(Format++);
+					switch(C2)
 					{
-						goto finish;
-					} break;
-
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-					case '9':
-					{
-						Padding = C2 - '0';
-						// TODO: Parse next format
-					} break;
-
-					case 's':
-					{
-						const char* String = va_arg(Args, const char*);
-
-						char C;
-						while((C = *(String++)) != 0)
+						case 0:
 						{
-							*(BufferAt++) = C;
-						}
-					} break;
+							goto finish;
+						} break;
 
-					case 'd':
-					{
-						i32 Value = va_arg(Args, i32);
-						i32 Negative = 0;
-						if(Value < 0)
+						case '-':
 						{
-							Negative = 1;
-							Value = -Value;
-						}
+							AlignLeft = 1;
+						} break;
 
-						char Tmp[32];
-						char* TmpAt = Tmp;
-						*(TmpAt++) = 0;
-						do
+						case '0':
 						{
-							u32 Num = Value / 10;
-							u32 Rem = Value - Num * 10;
-							*(TmpAt++) = Rem + '0';
-							Value = Num;
-						} while(Value);
-
-						if(Negative)
-						{
-							*(BufferAt++) = '-';
-						}
-
-						char C;
-						while((C = *(--TmpAt)) != 0)
-						{
-							*(BufferAt++) = C;
-						}
-					} break;
-
-					case 'u':
-					{
-						u32 Value = va_arg(Args, u32);
-
-						char Tmp[32];
-						char* TmpAt = Tmp;
-						*(TmpAt++) = 0;
-						do
-						{
-							u32 Num = Value / 10;
-							u32 Rem = Value - Num * 10;
-							*(TmpAt++) = Rem + '0';
-							Value = Num;
-						} while(Value);
-
-						char C;
-						while((C = *(--TmpAt)) != 0)
-						{
-							*(BufferAt++) = C;
-						}
-					} break;
-
-					case 'x':
-					case 'X':
-					{
-						char Case = (C2 == 'x') ? 'a' : 'A';
-
-						u64 Pos;
-						u64 Value = va_arg(Args, u64);
-						for(Pos = 64 - 4; Pos > 0; Pos -= 4)
-						{
-							u64 Mask = (0xFUL << Pos);
-							if(Value & Mask)
+							if(!Width)
 							{
-								break;
+								PadChar = '0';
 							}
-						}
-
-						while(1)
+						} // fallthrough
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						case '7':
+						case '8':
+						case '9':
 						{
-							u64 Part = (Value >> Pos) & 0xF;
-							*(BufferAt++) = (Part >= 10) ? (Part - 10 + Case) : (Part + '0');
-							if(Pos == 0)
+							Width = (Width * 10) + (C2 - '0');
+						} break;
+
+						case 's':
+						{
+							const char* String = va_arg(Args, const char*);
+							const char* StringAt = String;
+
+							char C;
+							while((C = *StringAt) != 0)
 							{
-								break;
+								*(BufferAt++) = C;
+								StringAt++;
 							}
 
-							Pos -= 4;
-						}
-					} break;
+							u32 Written = (StringAt - String);
+							if(AlignLeft)
+							{
+								if(Width > Written)
+								{
+									u32 Elapsed = Width - Written;
+									while(Elapsed--)
+									{
+										*(BufferAt++) = ' ';
+									}
+								}
+							}
 
-					case 'c':
-					{
-						int Value = va_arg(Args, int);
-						*(BufferAt++) = (char) Value;
-					} break;
+							InProgress = 0;
+						} break;
 
-					case '%':
-					{
-						*(BufferAt++) = C2;
-					} break;
+						case 'd':
+						{
+							i32 Value = va_arg(Args, i32);
+							i32 Negative = 0;
+							if(Value < 0)
+							{
+								Negative = 1;
+								Value = -Value;
+							}
 
-					default:
-					{
-						// TODO: Unknown modifier
-					} break;
+							char Tmp[32];
+							char* TmpAt = Tmp;
+							*(TmpAt++) = 0;
+							do
+							{
+								u32 Num = Value / 10;
+								u32 Rem = Value - Num * 10;
+								*(TmpAt++) = Rem + '0';
+								Value = Num;
+							} while(Value);
+
+							if(Negative)
+							{
+								*(BufferAt++) = '-';
+							}
+
+							char C;
+							while((C = *(--TmpAt)) != 0)
+							{
+								*(BufferAt++) = C;
+							}
+
+							InProgress = 0;
+						} break;
+
+						case 'u':
+						{
+							u32 Value = va_arg(Args, u32);
+
+							char Tmp[32];
+							char* TmpAt = Tmp;
+							*TmpAt = 0;
+
+							do
+							{
+								u32 Num = Value / 10;
+								u32 Rem = Value - Num * 10;
+								*(++TmpAt) = Rem + '0';
+								Value = Num;
+							} while(Value);
+
+							u32 Written = TmpAt - Tmp;
+							u32 Elapsed = Width - Written;
+							if(Width > Written)
+							{
+								if(!AlignLeft)
+								{
+									while(Elapsed--)
+									{
+										*(BufferAt++) = PadChar;
+									}
+								}
+							}
+
+							char C;
+							while((C = *(TmpAt--)) != 0)
+							{
+								*(BufferAt++) = C;
+							}
+
+							if(Width > Written)
+							{
+								if(AlignLeft)
+								{
+									while(Elapsed--)
+									{
+										*(BufferAt++) = PadChar;
+									}
+								}
+							}
+
+							InProgress = 0;
+						} break;
+
+						case 'x':
+						case 'X':
+						{
+							char Case = (C2 == 'x') ? 'a' : 'A';
+
+							u64 Pos;
+							u64 Value = va_arg(Args, u64);
+							for(Pos = 64 - 4; Pos > 0; Pos -= 4)
+							{
+								u64 Mask = (0xFUL << Pos);
+								if(Value & Mask)
+								{
+									break;
+								}
+							}
+
+							while(1)
+							{
+								u64 Part = (Value >> Pos) & 0xF;
+								*(BufferAt++) = (Part >= 10) ? (Part - 10 + Case) : (Part + '0');
+								if(Pos == 0)
+								{
+									break;
+								}
+
+								Pos -= 4;
+							}
+
+							InProgress = 0;
+						} break;
+
+						case 'c':
+						{
+							int Value = va_arg(Args, int);
+							*(BufferAt++) = (char) Value;
+							InProgress = 0;
+						} break;
+
+						case '%':
+						{
+							*(BufferAt++) = C2;
+						} break;
+
+						default:
+						{
+							// TODO: Unknown modifier
+						} break;
+					}
 				}
+				while(InProgress);
 			} break;
 
 			default:
@@ -191,5 +259,6 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 	}
 
 finish:
+	*(BufferAt++) = 0;
 	return (BufferAt - Buffer);
 }

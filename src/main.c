@@ -93,15 +93,15 @@ int main(void)
 		Assert(MboxGetTemperature(&Temperature));
 
 		ConsolePrintf("-- Clock -- Current Rate -- Measured -- Maximum\n");
-		for(u32 Clock = 0; Clock < 0xe; Clock++)
+		for(u32 Clock = 1; Clock < 0xe; Clock++)
 		{
-			ConsolePrintf("#%x (%s):", Clock, MboxClockNames[Clock]);
+			ConsolePrintf("#%x (%-5s):", Clock, MboxClockNames[Clock]);
 
 			u32 Rate = 0;
 
 			if(MboxGetClockRate(Clock, &Rate))
 			{
-				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
 			}
 			else
 			{
@@ -110,7 +110,7 @@ int main(void)
 
 			if(MboxGetMaxClockRate(Clock, &Rate))
 			{
-				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
 			}
 			else
 			{
@@ -119,7 +119,7 @@ int main(void)
 
 			if(MboxGetClockRateMeasured(Clock, &Rate))
 			{
-				ConsolePrintf(" -- %u.%uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
+				ConsolePrintf(" -- %4u.%-03uMHz", Rate / 1000000, (Rate - (Rate / 1000000) * 1000000) / 1000);
 			}
 			else
 			{
