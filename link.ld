@@ -11,7 +11,9 @@ SECTIONS
 {
 	.text :
 	{
-		KEEP(*(.text.boot))
+		KEEP(*(.boot))
+		KEEP(*(.vectors))
+
 		*(.text .text.* .gnu.linkonce.t*)
 	} > ram_code
 

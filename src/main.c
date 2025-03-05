@@ -23,8 +23,8 @@
 
 int main(void)
 {
-	BusyWait(100000);
 	ConsoleInit();
+	ConsolePrintf("Hello world\n");
 
 	u32 BoardModel = 0;
 	u64 SerialNumber = 0;
@@ -34,19 +34,14 @@ int main(void)
 	MboxGetBoardModel(&BoardModel);
 	MboxGetBoardMacAddress(&BoardMacAddress);
 
-	BusyWait(100000);
-
 	ConsolePrintf("Serial number is: 0x%X\n", SerialNumber);
 	ConsolePrintf("Board model is: 0x%x\n", BoardModel);
 	ConsolePrintf("Board mac address is: 0x%x\n", BoardMacAddress);
 
-	ConsolePrintf("FB initialized %dx%d [%d pitch] [rgb=%d]\n", FBWidth, FBHeight, FBPitch, FBRGB);
-
 	RNGInit();
-	FBInit();
-	BusyWait(100000);
 
-	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
+	FBInit();
+	ConsolePrintf("FB initialized %dx%d [%d pitch] [rgb=%d]\n", FBWidth, FBHeight, FBPitch, FBRGB);
 
 	if(!MboxSetClockRate(MBOX_CLOCK_ARM, 1400000000, 0))
 	{
@@ -57,12 +52,11 @@ int main(void)
 	{
 		ConsolePrintf("Failed to set CORE clock rate\n");
 	}
-	BusyWait(100000);
 
 	char C;
 	u32 X = 200;
 	u32 Y = 200;
-	int Size = 200;
+	int Size = 512;
 	u32 State = 0;
 	for(int Num = 0; ; Num++)
 	{
@@ -126,21 +120,24 @@ int main(void)
 			State = State ? 1 : 0;
 		}
 
-		FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
-		if(C == 'w') Y -= 10;
-		if(C == 's') Y += 10;
-		if(C == 'a') X -= 10;
-		if(C == 'd') X += 10;
-		if(C == '+') Size += 10;
-		if(C == '-') Size -= 10;
-		FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
+		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
+		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00333333);
+
+		// FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
+		// if(C == 'w') Y -= 10;
+		// if(C == 's') Y += 10;
+		// if(C == 'a') X -= 10;
+		// if(C == 'd') X += 10;
+		// if(C == '+') Size += 10;
+		// if(C == '-') Size -= 10;
+		// FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
 
 		u64 Freq2 = ReadCpuFrequency();
 		u64 Time2 = ReadCpuCounter();
 		if(Freq2 == Freq1)
 		{
 			u64 Total = ((Time2 - Time1) * 1000) / Freq1;
-			ConsolePrintf("Total cycles: %ums (Freq: %u)\n", Total, Freq1);
+			ConsolePrintf("Total: %ums (Freq: %u)\n", Total, Freq1);
 		}
 	}
 }
