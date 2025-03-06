@@ -38,9 +38,18 @@ static void ConsolePrintf(const char* Format, ...)
 
 static b32 ConsoleInit(void)
 {
-	b32 Result = UART0Init();
+	b32 Result = 0;
 
-	ConsolePrintf("\nConsole initialised with UART0\n");
+    if(UART0Init())
+    {
+        Result = 1;
+
+        ConsolePrintf("\nConsole UART0 initialized\n");
+    }
+    else
+    {
+    	ConsolePrintf("\nConsole UART0 failed to init?\n");
+    }
 
 	return Result;
 }

@@ -7,12 +7,17 @@ static b32 MboxInit(void)
     return Result;
 }
 
+#define DataSyncBarrier()   asm volatile ("dsb sy" ::: "memory")
+#define DataMemBarrier()    asm volatile ("dmb sy" ::: "memory")
+
 static b32 MboxCall(u8 Channel)
 {
     u32 Status;
     u32 Response;
     u32 ReadAddress;
     u32 WriteAddress = (((u64) &Mbox) & ~0xF) | (Channel & 0xF);
+
+    DataSyncBarrier();
 
     while(MBOX->STATUS0 & MBOX_STATUS0_FULL_Msk)
     {
@@ -30,14 +35,62 @@ static b32 MboxCall(u8 Channel)
     }
     while(MBOX->READ != WriteAddress);
 
-    if(Mbox[1] == MBOX_RESPONSE)
+    DataMemBarrier();
+
+    for(int i = 0; i < 10000; i++)
     {
-        return 1;
+        if(Mbox[1] == MBOX_RESPONSE)
+        {
+            return 1;
+        }
     }
-    else
+
+    return 0;
+}
+
+static void MboxCallForever(u8 Channel)
+{
+    u32 Status;
+    u32 Response;
+    u32 ReadAddress;
+    u32 WriteAddress = (((u64) &Mbox) & ~0xF) | (Channel & 0xF);
+
+    DataSyncBarrier();
+
+    while(MBOX->STATUS0 & MBOX_STATUS0_FULL_Msk)
     {
-        return 0;
+        // Do nothing
     }
+
+    MBOX->WRITE = WriteAddress;
+
+    do
+    {
+        while(MBOX->STATUS0 & MBOX_STATUS0_EMPTY_Msk)
+        {
+            // Do nothing
+        }
+    }
+    while(MBOX->READ != WriteAddress);
+
+    DataMemBarrier();
+
+    while(Mbox[1] != MBOX_RESPONSE)
+    {
+        // Do nothing
+    }
+}
+
+static void MboxWaitForVerticalSync(void)
+{
+    Mbox[0] = 7 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_FRAMEBUFFER_SET_VSYNC;
+    Mbox[3] = 1 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = 0;
+    Mbox[6] = MBOX_TAG_LAST;
+    MboxCallForever(MBOX_CH_PROP);
 }
 
 static b32 MboxGetBoardSerialNumber(u64* Value)

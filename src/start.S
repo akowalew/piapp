@@ -78,6 +78,10 @@ lower_el_aarch32_serror: // The exception handler for the system error
 .global _start
 
 _start:
+	MOV X0, XZR
+	MOV X1, XZR
+	MOV X2, XZR
+
 	// read cpu id, stop slave cores
 	mrs		x1, mpidr_el1
 	and		x1, x1, #3

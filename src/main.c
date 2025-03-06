@@ -23,7 +23,12 @@
 
 int main(void)
 {
-	ConsoleInit();
+	BusyWait(100000);
+	if(!ConsoleInit())
+	{
+		while(1);
+	}
+
 	ConsolePrintf("Hello world\n");
 
 	u32 BoardModel = 0;
@@ -53,15 +58,23 @@ int main(void)
 		ConsolePrintf("Failed to set CORE clock rate\n");
 	}
 
-	char C;
+	u32 VirtualOffset = 0;
+	FBSetVirtualOffset(0, VirtualOffset);
+	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00000000);
+	FBData = FBBuffer + (VirtualOffset ? 0 : FBHeight) * FBPitch;
+	FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00000000);
+
+	char C = 0;
+	u32 Color = 255;
+	i32 Delta = -1;
 	u32 X = 200;
 	u32 Y = 200;
 	int Size = 512;
 	u32 State = 0;
+	u64 Freq = ReadCpuFrequency();
 	for(int Num = 0; ; Num++)
 	{
 		u64 Time1 = ReadCpuCounter();
-		u64 Freq1 = ReadCpuFrequency();
 
 		if(!ConsolePeek(&C))
 		{
@@ -120,8 +133,18 @@ int main(void)
 			State = State ? 1 : 0;
 		}
 
-		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00111111);
-		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00333333);
+		u32 Box = 768;
+		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00999999);
+		FillRectangle(0, 0, FBWidth-1, FBHeight-1, Color);
+		Color += Delta;
+		if(Color == 0)
+		{
+			Delta = 1;
+		}
+		else if(Color == 255)
+		{
+			Delta = -1;
+		}
 
 		// FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
 		// if(C == 'w') Y -= 10;
@@ -132,12 +155,22 @@ int main(void)
 		// if(C == '-') Size -= 10;
 		// FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
 
-		u64 Freq2 = ReadCpuFrequency();
 		u64 Time2 = ReadCpuCounter();
-		if(Freq2 == Freq1)
+		if(!FBSetVirtualOffset(0, VirtualOffset ? 0 : FBHeight))
 		{
-			u64 Total = ((Time2 - Time1) * 1000) / Freq1;
-			ConsolePrintf("Total: %ums (Freq: %u)\n", Total, Freq1);
+			ConsolePrintf("Failed to set virtual offset\n");
 		}
+
+		u64 Time3 = ReadCpuCounter();
+		MboxWaitForVerticalSync();
+		FBData = FBBuffer + (VirtualOffset ? FBHeight : 0) * FBPitch;
+		VirtualOffset = VirtualOffset ? 0 : FBHeight;
+
+		u64 Time4 = ReadCpuCounter();
+		u64 TimeLoop = ((Time4 - Time1) * 1000) / Freq;
+		u64 TimeSwap = ((Time3 - Time1) * 1000) / Freq;
+		u64 TimeRender = ((Time2 - Time1) * 1000) / Freq;
+		u64 FPS = (1000 / TimeLoop);
+		// ConsolePrintf("Render %ums Swap %ums Loop %ums FPS %u\n", TimeRender, TimeSwap, TimeLoop, FPS);
 	}
 }

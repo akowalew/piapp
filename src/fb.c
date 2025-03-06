@@ -1,5 +1,5 @@
 u32 FBWidth, FBHeight, FBPitch, FBRGB;
-u8* FBData;
+u8* FBBuffer, *FBData;
 
 static b32 FBInit(void)
 {
@@ -20,7 +20,7 @@ static b32 FBInit(void)
 	*(At++) = 8;
 	*(At++) = 8;
 	*(At++) = 1024;
-	*(At++) = 768;
+	*(At++) = 768 * 2;
 
 	*(At++) = MBOX_TAG_FRAMEBUFFER_SET_VIRTUAL_OFFSET;
 	*(At++) = 8;
@@ -60,9 +60,29 @@ static b32 FBInit(void)
 			FBHeight = Mbox[6];
 			FBPitch = Mbox[33];
 			FBRGB = Mbox[24];
-			FBData = (void*)((u64)Mbox[28]);
+			FBData = FBBuffer = (void*)((u64)Mbox[28]);
 			Result = 1;
 		}
+	}
+
+	return Result;
+}
+
+static b32 FBSetVirtualOffset(u32 X, u32 Y)
+{
+	b32 Result = 0;
+
+	Mbox[0] = 8 * 4;
+	Mbox[1] = MBOX_REQUEST;
+	Mbox[2] = MBOX_TAG_FRAMEBUFFER_SET_VIRTUAL_OFFSET;
+	Mbox[3] = 2 * 4;
+	Mbox[4] = 0;
+	Mbox[5] = X;
+	Mbox[6] = Y;
+	Mbox[7] = MBOX_TAG_LAST;
+	if(MboxCall(MBOX_CH_PROP))
+	{
+		Result = 1;
 	}
 
 	return Result;
