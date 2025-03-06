@@ -95,6 +95,12 @@ _start:
 
 2:	// cpu id == 0
 
+    mrs     x0, sctlr_el1      // Read SCTLR
+    orr     x0, x0, #(1 << 2)  // Enable Data Cache (C bit)
+    orr     x0, x0, #(1 << 12) // Enable Instruction Cache (I bit)
+    msr     sctlr_el1, x0      // Write back SCTLR
+    isb
+
 	mrs x0, CurrentEL   // Read CurrentEL register into x0
     lsr x0, x0, #2
 

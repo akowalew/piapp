@@ -78,7 +78,7 @@ int main(void)
 
 		if(!ConsolePeek(&C))
 		{
-			C = 'd';
+			C = 0;
 		}
 
 		if(C == 'r')
@@ -133,9 +133,9 @@ int main(void)
 			State = State ? 1 : 0;
 		}
 
-		u32 Box = 768;
-		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00999999);
-		FillRectangle(0, 0, FBWidth-1, FBHeight-1, Color);
+		u32 Box = 128;
+		FillRectangle(0, 0, FBWidth-1, FBHeight-1, 0x00222222);
+		FillRectangle(X, Y, X+Box-1, Y+Box-1, Color);
 		Color += Delta;
 		if(Color == 0)
 		{
@@ -146,14 +146,12 @@ int main(void)
 			Delta = -1;
 		}
 
-		// FillRectangle(X, Y, X+Size, Y+Size, 0x00111111);
-		// if(C == 'w') Y -= 10;
-		// if(C == 's') Y += 10;
-		// if(C == 'a') X -= 10;
-		// if(C == 'd') X += 10;
-		// if(C == '+') Size += 10;
-		// if(C == '-') Size -= 10;
-		// FillRectangle(X, Y, X+Size, Y+Size, 0x00FF00FF);
+		if(C == 'w') Y -= 4;
+		if(C == 's') Y += 4;
+		if(C == 'a') X -= 4;
+		if(C == 'd') X += 4;
+		if(C == '+') Size += 16;
+		if(C == '-') Size -= 16;
 
 		u64 Time2 = ReadCpuCounter();
 		if(!FBSetVirtualOffset(0, VirtualOffset ? 0 : FBHeight))
@@ -171,6 +169,6 @@ int main(void)
 		u64 TimeSwap = ((Time3 - Time1) * 1000) / Freq;
 		u64 TimeRender = ((Time2 - Time1) * 1000) / Freq;
 		u64 FPS = (1000 / TimeLoop);
-		// ConsolePrintf("Render %ums Swap %ums Loop %ums FPS %u\n", TimeRender, TimeSwap, TimeLoop, FPS);
+		ConsolePrintf("Render %ums Swap %ums Loop %ums FPS %u\n", TimeRender, TimeSwap, TimeLoop, FPS);
 	}
 }

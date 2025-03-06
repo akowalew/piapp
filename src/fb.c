@@ -88,7 +88,7 @@ static b32 FBSetVirtualOffset(u32 X, u32 Y)
 	return Result;
 }
 
-static void  __attribute__((optimize("-O3"))) FillRectangle(u32 X1, u32 Y1, u32 X2, u32 Y2, u32 Color)
+static void  __attribute__((optimize("-O4"))) FillRectangle(u32 X1, u32 Y1, u32 X2, u32 Y2, u32 Color)
 {
 	u8* Row = FBData + Y1 * FBPitch + X1 * 4;
 
