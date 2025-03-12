@@ -9,9 +9,10 @@
 #include "console.h"
 #include "console.c"
 
+int Counter = 50000;
+
 int main(void)
 {
-	int Counter = 0;
 	ConsoleInit();
 	while(1)
 	{
