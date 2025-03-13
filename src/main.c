@@ -16,6 +16,8 @@
 #include "console.c"
 #include "led.h"
 #include "led.c"
+#include "disp.h"
+#include "disp.c"
 
 static void PrintClocks(void)
 {
@@ -63,14 +65,14 @@ int main(void)
 	ConsoleInit();
 	ConfigureGpioForAlt5JtagAndAlt4Trst();
 	LedInit();
+	DispInit();
 
 	while(1)
 	{
 		ConsolePrintf("Hello world: %d\n", Counter++);
-		PrintClocks();
-		BusyWait(1000000);
-		LedOff();
-		BusyWait(1000000);
-		LedOn();
+		BusyWaitMs(100000);
+		GpioSet(DISP_GPIO_BACKLIGHT);
+		BusyWaitMs(100000);
+		GpioClear(DISP_GPIO_BACKLIGHT);
 	}
 }

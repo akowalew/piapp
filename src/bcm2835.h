@@ -784,13 +784,13 @@ typedef struct {                                /*!< EMMC Structure             
   * @{
   */
 
-#define MBOX                   ((MBOX_Type*)         MBOX_BASE)
+#define MBOX                        ((MBOX_Type*)              MBOX_BASE)
 #define PM                          ((PM_Type*)                PM_BASE)
 #define CM_PCM                      ((CM_PCM_Type*)            CM_PCM_BASE)
 #define CM_PWM                      ((CM_PCM_Type*)            CM_PWM_BASE)
 #define GPIO                        ((GPIO_Type*)              GPIO_BASE)
 #define SYSTMR                      ((SYSTMR_Type*)            SYSTMR_BASE)
-#define UART0                       ((UART0_Type*)    UART0_BASE)
+#define UART0                       ((UART0_Type*)             UART0_BASE)
 #define SPI0                        ((SPI0_Type*)              SPI0_BASE)
 #define BSC0                        ((BSC0_Type*)              BSC0_BASE)
 #define PWM0                        ((PWM0_Type*)              PWM0_BASE)
