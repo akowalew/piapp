@@ -215,16 +215,16 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 							InProgress = 0;
 						} break;
 
-						case 'x':
+						case 'x': // fallthrough
 						case 'X':
 						{
 							char Case = (C2 == 'x') ? 'a' : 'A';
 
-							u64 Pos;
-							u64 Value = va_arg(Args, u64);
+							unsigned Pos;
+							unsigned Value = va_arg(Args, unsigned);
 							for(Pos = 64 - 4; Pos > 0; Pos -= 4)
 							{
-								u64 Mask = (0xFUL << Pos);
+								unsigned Mask = (0xFUL << Pos);
 								if(Value & Mask)
 								{
 									break;
@@ -233,7 +233,7 @@ FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args
 
 							while(1)
 							{
-								u64 Part = (Value >> Pos) & 0xF;
+								unsigned Part = (Value >> Pos) & 0xF;
 								*(BufferAt++) = (Part >= 10) ? (Part - 10 + Case) : (Part + '0');
 								if(Pos == 0)
 								{

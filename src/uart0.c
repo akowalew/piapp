@@ -13,16 +13,10 @@ static b32 UART0Init(void)
     Mbox[8] = MBOX_TAG_LAST;
     if(MboxCall(MBOX_CH_PROP))
     {
-        unsigned int Reg;
-
-	    Reg = *GPFSEL1;
-	    Reg &= ~((0x7 << 12) | (0x7 << 15)); // GPIO14, GPIO15
-	    Reg |= (0x4 << 12) | (0x4 << 15); // Alt5
-	    *GPFSEL1 = Reg;
-	    *GPPUD = 0; // Enable pins 14 and 15
-	    *GPPUDCLK0 = (1 << 14) | (1 << 15);
-	    BusyWait(150);
-	    *GPPUDCLK0 = 0; // Flush GPIO setup
+        GpioSelectFunction(14, GPIO_FUNCTION_ALT5);
+        GpioSelectFunction(15, GPIO_FUNCTION_ALT5);
+        GpioControlPull(14, GPIO_PULL_OFF);
+        GpioControlPull(15, GPIO_PULL_OFF);
 
         UART0->ICR = 0x7FF; // Clear interrupts
         UART0->IBRD = 2; // 115200

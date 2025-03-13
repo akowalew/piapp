@@ -160,7 +160,7 @@ typedef enum
 #define MBOX_CLOCK_M2MC         0x00000000d
 #define MBOX_CLOCK_PIXEL_BVB    0x00000000e
 
-static const char* MboxClockNames[] =
+static const char* const MboxClockNames[] =
 {
 	"reserved",
 	"EMMC",

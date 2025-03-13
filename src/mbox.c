@@ -15,9 +15,9 @@ static b32 MboxCall(u8 Channel)
     u32 Status;
     u32 Response;
     u32 ReadAddress;
-    u32 WriteAddress = (((u64) &Mbox) & ~0xF) | (Channel & 0xF);
+    u32 WriteAddress = (((u32) &Mbox) & ~0xF) | (Channel & 0xF);
 
-    DataSyncBarrier();
+    // DataSyncBarrier();
 
     while(MBOX->STATUS0 & MBOX_STATUS0_FULL_Msk)
     {
@@ -35,7 +35,7 @@ static b32 MboxCall(u8 Channel)
     }
     while(MBOX->READ != WriteAddress);
 
-    DataMemBarrier();
+    // DataMemBarrier();
 
     for(int i = 0; i < 10000; i++)
     {
@@ -53,9 +53,9 @@ static void MboxCallForever(u8 Channel)
     u32 Status;
     u32 Response;
     u32 ReadAddress;
-    u32 WriteAddress = (((u64) &Mbox) & ~0xF) | (Channel & 0xF);
+    u32 WriteAddress = (((u32) &Mbox) & ~0xF) | (Channel & 0xF);
 
-    DataSyncBarrier();
+    // DataSyncBarrier();
 
     while(MBOX->STATUS0 & MBOX_STATUS0_FULL_Msk)
     {
@@ -73,7 +73,7 @@ static void MboxCallForever(u8 Channel)
     }
     while(MBOX->READ != WriteAddress);
 
-    DataMemBarrier();
+    // DataMemBarrier();
 
     while(Mbox[1] != MBOX_RESPONSE)
     {

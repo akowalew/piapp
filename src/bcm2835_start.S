@@ -1,8 +1,36 @@
 .global _start
-.section .text
+.section .boot
 
 _start:
     b reset_handler
+    b undefined_handler
+    b svc_handler
+    b prefetch_abort
+    b data_abort
+    b reserved_handler
+    b irq_handler
+    b fiq_handler
+
+undefined_handler:
+    b undefined_handler
+
+svc_handler:
+    b svc_handler
+
+prefetch_abort:
+    b prefetch_abort
+
+data_abort:
+    b data_abort
+
+reserved_handler:
+    b reserved_handler
+
+irq_handler:
+    b irq_handler
+
+fiq_handler:
+    b fiq_handler
 
 reset_handler:
     ldr sp, =stack_top

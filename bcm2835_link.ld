@@ -6,12 +6,17 @@ SECTIONS
 
     .text :
     {
-        *(.text)
+        *(.boot .boot.*)
+        *(.text .text.* .gnu.linkonce.t*)
     }
 
     .rodata :
     {
-        *(.rodata)
+        *(.rodata .rodata* .gnu.linkonce.r*)
+    }
+
+    .got : {
+        *(.got .got.*)      /* Global Offset Table */
     }
 
     _sidata = .;  /* Start of .data in ROM */
@@ -19,7 +24,7 @@ SECTIONS
     .data :
     {
         _sdata = .;
-        *(.data)
+        *(.data .data.*)
         _edata = .;
     }
 
@@ -27,7 +32,7 @@ SECTIONS
     {
         _sbss = .;
         *(COMMON)
-        *(.bss)
+        *(.bss .bss.*)
         _ebss = .;
     }
 

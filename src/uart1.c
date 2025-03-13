@@ -2,15 +2,10 @@ static b32 UART1Init(void)
 {
     b32 Result = 0;
 
-    unsigned int Reg;
-    Reg = GPIO->GPFSEL1;
-    Reg &= ~((0x7 << 12) | (0x7 << 15)); // GPIO14, GPIO15
-    Reg |= (0x2 << 12) | (0x2 << 15); // Alt5
-    GPIO->GPFSEL1 = Reg;
-    GPIO->GPIO_PUP_PDN_CNTRL_REG0 = 0; // Enable pins 14 and 15
-    GPIO->GPIO_PUP_PDN_CNTRL_REG1 = (1 << 14) | (1 << 15);
-    BusyWait(150);
-    GPIO->GPIO_PUP_PDN_CNTRL_REG1 = 0; // Flush GPIO setup
+    GpioSelectFunction(14, GPIO_FUNCTION_ALT5);
+    GpioSelectFunction(15, GPIO_FUNCTION_ALT5);
+    GpioControlPull(14, GPIO_PULL_OFF);
+    GpioControlPull(15, GPIO_PULL_OFF);
 
     AUX->ENABLES |= AUX_ENABLES_UART_1_Msk;
 

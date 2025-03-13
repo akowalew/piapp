@@ -6,7 +6,7 @@ GFLAGS="$GFLAGS -gdwarf-2 -g3"
 OFLAGS="$OFLAGS -O0 -ffreestanding -nostartfiles -nostdlib -ffunction-sections -fdata-sections -static"
 WFLAGS="$WFLAGS -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Wundef -Wshadow"
 XFLAGS="$XFLAGS -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-overlength-strings"
-LFLAGS="$LFLAGS -Wl,-Tbcm2835_link.ld -Wl,-Map=out/kernel.map -Wl,--gc-sections -Wl,--no-warn-rwx-segments -Wl,--build-id=none"
+LFLAGS="$LFLAGS -Wl,-Tbcm2835_link.ld -Wl,-Map=out/kernel.map -Wl,--gc-sections"
 IFLAGS="$IFLAGS -I."
 
 set -ex

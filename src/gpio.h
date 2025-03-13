@@ -1,18 +1,29 @@
-#define GPFSEL0         ((volatile unsigned int*)(MMIO_BASE+0x00200000))
-#define GPFSEL1         ((volatile unsigned int*)(MMIO_BASE+0x00200004))
-#define GPFSEL2         ((volatile unsigned int*)(MMIO_BASE+0x00200008))
-#define GPFSEL3         ((volatile unsigned int*)(MMIO_BASE+0x0020000C))
-#define GPFSEL4         ((volatile unsigned int*)(MMIO_BASE+0x00200010))
-#define GPFSEL5         ((volatile unsigned int*)(MMIO_BASE+0x00200014))
-#define GPSET0          ((volatile unsigned int*)(MMIO_BASE+0x0020001C))
-#define GPSET1          ((volatile unsigned int*)(MMIO_BASE+0x00200020))
-#define GPCLR0          ((volatile unsigned int*)(MMIO_BASE+0x00200028))
-#define GPLEV0          ((volatile unsigned int*)(MMIO_BASE+0x00200034))
-#define GPLEV1          ((volatile unsigned int*)(MMIO_BASE+0x00200038))
-#define GPEDS0          ((volatile unsigned int*)(MMIO_BASE+0x00200040))
-#define GPEDS1          ((volatile unsigned int*)(MMIO_BASE+0x00200044))
-#define GPHEN0          ((volatile unsigned int*)(MMIO_BASE+0x00200064))
-#define GPHEN1          ((volatile unsigned int*)(MMIO_BASE+0x00200068))
-#define GPPUD           ((volatile unsigned int*)(MMIO_BASE+0x00200094))
-#define GPPUDCLK0       ((volatile unsigned int*)(MMIO_BASE+0x00200098))
-#define GPPUDCLK1       ((volatile unsigned int*)(MMIO_BASE+0x0020009C))
+#define GPIO_FUNCTION_INPUT  0
+#define GPIO_FUNCTION_OUTPUT 1
+#define GPIO_FUNCTION_ALT0   4
+#define GPIO_FUNCTION_ALT1   5
+#define GPIO_FUNCTION_ALT2   6
+#define GPIO_FUNCTION_ALT3   7
+#define GPIO_FUNCTION_ALT4   3
+#define GPIO_FUNCTION_ALT5   2
+
+#define GPIO_PULL_OFF 0
+#define GPIO_PULL_DOWN 1
+#define GPIO_PULL_UP 2
+
+#define GpioSelectFunction(N, F) (&GPIO->GPFSEL0)[(N)/10] = ((&GPIO->GPFSEL0)[(N)/10] & ~(7 << (((N)%10)*3))) | ((F) << (((N)%10)*3))
+#define GpioSelectFunctionInput(N) GpioFunctionSelect((N), GPIO_INPUT)
+#define GpioSelectFunctionOutput(N) GpioFunctionSelect((N), GPIO_OUTPUT)
+#define GpioSelectFunctionAlternate(N, M) GpioFunctionSelect((N), (M) + 2)
+
+#define GpioSet(N) (&GPIO->GPSET0)[(N)>>5] = 1 << ((N)&31)
+#define GpioClear(N) (&GPIO->GPCLR0)[(N)>>5] = 1 << ((N)&31)
+
+static void GpioControlPull(u32 N, u32 P)
+{
+    GPIO->GPIO_PUP_PDN_CNTRL_REG0 = P;
+    BusyWait(150);
+    (&GPIO->GPIO_PUP_PDN_CNTRL_REG1)[(N)>>5] = 1 << ((N)&31);
+    BusyWait(150);
+    GPIO->GPIO_PUP_PDN_CNTRL_REG1 = 0;
+}

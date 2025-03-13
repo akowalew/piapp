@@ -191,15 +191,15 @@ typedef struct {
 
 
 /* =========================================================================================================================== */
-/* ================                                         VCMAILBOX                                         ================ */
+/* ================                                         MBOX                                         ================ */
 /* =========================================================================================================================== */
 
 
 /**
-  * @brief Mailboxes for talking to/from VideoCore (VCMAILBOX)
+  * @brief Mailboxes for talking to/from VideoCore (MBOX)
   */
 
-typedef struct {                                /*!< VCMAILBOX Structure                                                       */
+typedef struct {                                /*!< MBOX Structure                                                       */
   __IM  uint32_t  READ;                         /*!< Read messages from the VideoCore                                          */
   __IM  uint32_t  RESERVED[3];
   __IOM uint32_t  PEEK0;                        /*!< PEEK0                                                                     */
@@ -212,7 +212,7 @@ typedef struct {                                /*!< VCMAILBOX Structure        
   __IOM uint32_t  SENDER1;                      /*!< SENDER1                                                                   */
   __IOM uint32_t  STATUS1;                      /*!< STATUS1                                                                   */
   __IOM uint32_t  CONFIG1;                      /*!< CONFIG1                                                                   */
-} VCMAILBOX_Type;                               /*!< Size = 64 (0x40)                                                          */
+} MBOX_Type;                               /*!< Size = 64 (0x40)                                                          */
 
 
 
@@ -357,7 +357,7 @@ typedef struct {                                /*!< UART0 Structure            
   __IM  uint32_t  MIS;                          /*!< Masked Interrupt Status Register                                          */
   __OM  uint32_t  ICR;                          /*!< Interrupt Clear Register                                                  */
   __IOM uint32_t  DMACR;                        /*!< DMA Control Register                                                      */
-} ARM_UART_PL011_Type;                          /*!< Size = 76 (0x4c)                                                          */
+} UART0_Type;                          /*!< Size = 76 (0x4c)                                                          */
 
 
 
@@ -749,7 +749,7 @@ typedef struct {                                /*!< EMMC Structure             
   * @{
   */
 
-#define VCMAILBOX_BASE              0x2000B880UL
+#define MBOX_BASE                   0x2000B880UL
 #define PM_BASE                     0x20100000UL
 #define CM_PCM_BASE                 0x20101098UL
 #define CM_PWM_BASE                 0x201010A0UL
@@ -784,13 +784,13 @@ typedef struct {                                /*!< EMMC Structure             
   * @{
   */
 
-#define VCMAILBOX                   ((VCMAILBOX_Type*)         VCMAILBOX_BASE)
+#define MBOX                   ((MBOX_Type*)         MBOX_BASE)
 #define PM                          ((PM_Type*)                PM_BASE)
 #define CM_PCM                      ((CM_PCM_Type*)            CM_PCM_BASE)
 #define CM_PWM                      ((CM_PCM_Type*)            CM_PWM_BASE)
 #define GPIO                        ((GPIO_Type*)              GPIO_BASE)
 #define SYSTMR                      ((SYSTMR_Type*)            SYSTMR_BASE)
-#define UART0                       ((ARM_UART_PL011_Type*)    UART0_BASE)
+#define UART0                       ((UART0_Type*)    UART0_BASE)
 #define SPI0                        ((SPI0_Type*)              SPI0_BASE)
 #define BSC0                        ((BSC0_Type*)              BSC0_BASE)
 #define PWM0                        ((PWM0_Type*)              PWM0_BASE)
@@ -1064,20 +1064,20 @@ typedef struct {                                /*!< EMMC Structure             
 
 
 /* =========================================================================================================================== */
-/* ================                                         VCMAILBOX                                         ================ */
+/* ================                                         MBOX                                         ================ */
 /* =========================================================================================================================== */
 
 /* =========================================================  READ  ========================================================== */
 /* =========================================================  PEEK0  ========================================================= */
 /* ========================================================  SENDER0  ======================================================== */
 /* ========================================================  STATUS0  ======================================================== */
-#define VCMAILBOX_STATUS0_FULL_Pos        (31UL)                    /*!< FULL (Bit 31)                                         */
-#define VCMAILBOX_STATUS0_FULL_Msk        (0x80000000UL)            /*!< FULL (Bitfield-Mask: 0x01)                            */
-#define VCMAILBOX_STATUS0_EMPTY_Pos       (30UL)                    /*!< EMPTY (Bit 30)                                        */
-#define VCMAILBOX_STATUS0_EMPTY_Msk       (0x40000000UL)            /*!< EMPTY (Bitfield-Mask: 0x01)                           */
+#define MBOX_STATUS0_FULL_Pos        (31UL)                    /*!< FULL (Bit 31)                                         */
+#define MBOX_STATUS0_FULL_Msk        (0x80000000UL)            /*!< FULL (Bitfield-Mask: 0x01)                            */
+#define MBOX_STATUS0_EMPTY_Pos       (30UL)                    /*!< EMPTY (Bit 30)                                        */
+#define MBOX_STATUS0_EMPTY_Msk       (0x40000000UL)            /*!< EMPTY (Bitfield-Mask: 0x01)                           */
 /* ========================================================  CONFIG0  ======================================================== */
-#define VCMAILBOX_CONFIG0_IRQEN_Pos       (0UL)                     /*!< IRQEN (Bit 0)                                         */
-#define VCMAILBOX_CONFIG0_IRQEN_Msk       (0x1UL)                   /*!< IRQEN (Bitfield-Mask: 0x01)                           */
+#define MBOX_CONFIG0_IRQEN_Pos       (0UL)                     /*!< IRQEN (Bit 0)                                         */
+#define MBOX_CONFIG0_IRQEN_Msk       (0x1UL)                   /*!< IRQEN (Bitfield-Mask: 0x01)                           */
 /* =========================================================  WRITE  ========================================================= */
 /* =========================================================  PEEK1  ========================================================= */
 /* ========================================================  SENDER1  ======================================================== */
@@ -1132,7 +1132,6 @@ typedef struct {                                /*!< EMMC Structure             
 /* =========================================================================================================================== */
 /* ================                                           GPIO                                            ================ */
 /* =========================================================================================================================== */
-
 /* ========================================================  GPFSEL0  ======================================================== */
 #define GPIO_GPFSEL0_FSEL0_Pos            (0UL)                     /*!< FSEL0 (Bit 0)                                         */
 #define GPIO_GPFSEL0_FSEL0_Msk            (0x7UL)                   /*!< FSEL0 (Bitfield-Mask: 0x07)                           */
@@ -2486,201 +2485,201 @@ typedef struct {                                /*!< EMMC Structure             
 
 
 /* =========================================================================================================================== */
-/* ================                                      ARM_UART_PL011                                       ================ */
+/* ================                                      UART0                                       ================ */
 /* =========================================================================================================================== */
 
 /* ==========================================================  DR  =========================================================== */
-#define ARM_UART_PL011_DR_DATA_Pos        (0UL)                     /*!< DATA (Bit 0)                                          */
-#define ARM_UART_PL011_DR_DATA_Msk        (0xffUL)                  /*!< DATA (Bitfield-Mask: 0xff)                            */
-#define ARM_UART_PL011_DR_FE_Pos          (8UL)                     /*!< FE (Bit 8)                                            */
-#define ARM_UART_PL011_DR_FE_Msk          (0x100UL)                 /*!< FE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_DR_PE_Pos          (9UL)                     /*!< PE (Bit 9)                                            */
-#define ARM_UART_PL011_DR_PE_Msk          (0x200UL)                 /*!< PE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_DR_BE_Pos          (10UL)                    /*!< BE (Bit 10)                                           */
-#define ARM_UART_PL011_DR_BE_Msk          (0x400UL)                 /*!< BE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_DR_OE_Pos          (11UL)                    /*!< OE (Bit 11)                                           */
-#define ARM_UART_PL011_DR_OE_Msk          (0x800UL)                 /*!< OE (Bitfield-Mask: 0x01)                              */
+#define UART0_DR_DATA_Pos        (0UL)                     /*!< DATA (Bit 0)                                          */
+#define UART0_DR_DATA_Msk        (0xffUL)                  /*!< DATA (Bitfield-Mask: 0xff)                            */
+#define UART0_DR_FE_Pos          (8UL)                     /*!< FE (Bit 8)                                            */
+#define UART0_DR_FE_Msk          (0x100UL)                 /*!< FE (Bitfield-Mask: 0x01)                              */
+#define UART0_DR_PE_Pos          (9UL)                     /*!< PE (Bit 9)                                            */
+#define UART0_DR_PE_Msk          (0x200UL)                 /*!< PE (Bitfield-Mask: 0x01)                              */
+#define UART0_DR_BE_Pos          (10UL)                    /*!< BE (Bit 10)                                           */
+#define UART0_DR_BE_Msk          (0x400UL)                 /*!< BE (Bitfield-Mask: 0x01)                              */
+#define UART0_DR_OE_Pos          (11UL)                    /*!< OE (Bit 11)                                           */
+#define UART0_DR_OE_Msk          (0x800UL)                 /*!< OE (Bitfield-Mask: 0x01)                              */
 /* ==========================================================  RSR  ========================================================== */
-#define ARM_UART_PL011_RSR_FE_Pos         (0UL)                     /*!< FE (Bit 0)                                            */
-#define ARM_UART_PL011_RSR_FE_Msk         (0x1UL)                   /*!< FE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_RSR_PE_Pos         (1UL)                     /*!< PE (Bit 1)                                            */
-#define ARM_UART_PL011_RSR_PE_Msk         (0x2UL)                   /*!< PE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_RSR_BE_Pos         (2UL)                     /*!< BE (Bit 2)                                            */
-#define ARM_UART_PL011_RSR_BE_Msk         (0x4UL)                   /*!< BE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_RSR_OE_Pos         (3UL)                     /*!< OE (Bit 3)                                            */
-#define ARM_UART_PL011_RSR_OE_Msk         (0x8UL)                   /*!< OE (Bitfield-Mask: 0x01)                              */
+#define UART0_RSR_FE_Pos         (0UL)                     /*!< FE (Bit 0)                                            */
+#define UART0_RSR_FE_Msk         (0x1UL)                   /*!< FE (Bitfield-Mask: 0x01)                              */
+#define UART0_RSR_PE_Pos         (1UL)                     /*!< PE (Bit 1)                                            */
+#define UART0_RSR_PE_Msk         (0x2UL)                   /*!< PE (Bitfield-Mask: 0x01)                              */
+#define UART0_RSR_BE_Pos         (2UL)                     /*!< BE (Bit 2)                                            */
+#define UART0_RSR_BE_Msk         (0x4UL)                   /*!< BE (Bitfield-Mask: 0x01)                              */
+#define UART0_RSR_OE_Pos         (3UL)                     /*!< OE (Bit 3)                                            */
+#define UART0_RSR_OE_Msk         (0x8UL)                   /*!< OE (Bitfield-Mask: 0x01)                              */
 /* ==========================================================  ECR  ========================================================== */
-#define ARM_UART_PL011_ECR_FE_Pos         (0UL)                     /*!< FE (Bit 0)                                            */
-#define ARM_UART_PL011_ECR_FE_Msk         (0x1UL)                   /*!< FE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_ECR_PE_Pos         (1UL)                     /*!< PE (Bit 1)                                            */
-#define ARM_UART_PL011_ECR_PE_Msk         (0x2UL)                   /*!< PE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_ECR_BE_Pos         (2UL)                     /*!< BE (Bit 2)                                            */
-#define ARM_UART_PL011_ECR_BE_Msk         (0x4UL)                   /*!< BE (Bitfield-Mask: 0x01)                              */
-#define ARM_UART_PL011_ECR_OE_Pos         (3UL)                     /*!< OE (Bit 3)                                            */
-#define ARM_UART_PL011_ECR_OE_Msk         (0x8UL)                   /*!< OE (Bitfield-Mask: 0x01)                              */
+#define UART0_ECR_FE_Pos         (0UL)                     /*!< FE (Bit 0)                                            */
+#define UART0_ECR_FE_Msk         (0x1UL)                   /*!< FE (Bitfield-Mask: 0x01)                              */
+#define UART0_ECR_PE_Pos         (1UL)                     /*!< PE (Bit 1)                                            */
+#define UART0_ECR_PE_Msk         (0x2UL)                   /*!< PE (Bitfield-Mask: 0x01)                              */
+#define UART0_ECR_BE_Pos         (2UL)                     /*!< BE (Bit 2)                                            */
+#define UART0_ECR_BE_Msk         (0x4UL)                   /*!< BE (Bitfield-Mask: 0x01)                              */
+#define UART0_ECR_OE_Pos         (3UL)                     /*!< OE (Bit 3)                                            */
+#define UART0_ECR_OE_Msk         (0x8UL)                   /*!< OE (Bitfield-Mask: 0x01)                              */
 /* ==========================================================  FR  =========================================================== */
-#define ARM_UART_PL011_FR_CTS_Pos         (0UL)                     /*!< CTS (Bit 0)                                           */
-#define ARM_UART_PL011_FR_CTS_Msk         (0x1UL)                   /*!< CTS (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_FR_DSR_Pos         (1UL)                     /*!< DSR (Bit 1)                                           */
-#define ARM_UART_PL011_FR_DSR_Msk         (0x2UL)                   /*!< DSR (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_FR_DCD_Pos         (2UL)                     /*!< DCD (Bit 2)                                           */
-#define ARM_UART_PL011_FR_DCD_Msk         (0x4UL)                   /*!< DCD (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_FR_BUSY_Pos        (3UL)                     /*!< BUSY (Bit 3)                                          */
-#define ARM_UART_PL011_FR_BUSY_Msk        (0x8UL)                   /*!< BUSY (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_FR_RXFE_Pos        (4UL)                     /*!< RXFE (Bit 4)                                          */
-#define ARM_UART_PL011_FR_RXFE_Msk        (0x10UL)                  /*!< RXFE (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_FR_TXFF_Pos        (5UL)                     /*!< TXFF (Bit 5)                                          */
-#define ARM_UART_PL011_FR_TXFF_Msk        (0x20UL)                  /*!< TXFF (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_FR_RXFF_Pos        (6UL)                     /*!< RXFF (Bit 6)                                          */
-#define ARM_UART_PL011_FR_RXFF_Msk        (0x40UL)                  /*!< RXFF (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_FR_TXFE_Pos        (7UL)                     /*!< TXFE (Bit 7)                                          */
-#define ARM_UART_PL011_FR_TXFE_Msk        (0x80UL)                  /*!< TXFE (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_FR_RI_Pos          (8UL)                     /*!< RI (Bit 8)                                            */
-#define ARM_UART_PL011_FR_RI_Msk          (0x100UL)                 /*!< RI (Bitfield-Mask: 0x01)                              */
+#define UART0_FR_CTS_Pos         (0UL)                     /*!< CTS (Bit 0)                                           */
+#define UART0_FR_CTS_Msk         (0x1UL)                   /*!< CTS (Bitfield-Mask: 0x01)                             */
+#define UART0_FR_DSR_Pos         (1UL)                     /*!< DSR (Bit 1)                                           */
+#define UART0_FR_DSR_Msk         (0x2UL)                   /*!< DSR (Bitfield-Mask: 0x01)                             */
+#define UART0_FR_DCD_Pos         (2UL)                     /*!< DCD (Bit 2)                                           */
+#define UART0_FR_DCD_Msk         (0x4UL)                   /*!< DCD (Bitfield-Mask: 0x01)                             */
+#define UART0_FR_BUSY_Pos        (3UL)                     /*!< BUSY (Bit 3)                                          */
+#define UART0_FR_BUSY_Msk        (0x8UL)                   /*!< BUSY (Bitfield-Mask: 0x01)                            */
+#define UART0_FR_RXFE_Pos        (4UL)                     /*!< RXFE (Bit 4)                                          */
+#define UART0_FR_RXFE_Msk        (0x10UL)                  /*!< RXFE (Bitfield-Mask: 0x01)                            */
+#define UART0_FR_TXFF_Pos        (5UL)                     /*!< TXFF (Bit 5)                                          */
+#define UART0_FR_TXFF_Msk        (0x20UL)                  /*!< TXFF (Bitfield-Mask: 0x01)                            */
+#define UART0_FR_RXFF_Pos        (6UL)                     /*!< RXFF (Bit 6)                                          */
+#define UART0_FR_RXFF_Msk        (0x40UL)                  /*!< RXFF (Bitfield-Mask: 0x01)                            */
+#define UART0_FR_TXFE_Pos        (7UL)                     /*!< TXFE (Bit 7)                                          */
+#define UART0_FR_TXFE_Msk        (0x80UL)                  /*!< TXFE (Bitfield-Mask: 0x01)                            */
+#define UART0_FR_RI_Pos          (8UL)                     /*!< RI (Bit 8)                                            */
+#define UART0_FR_RI_Msk          (0x100UL)                 /*!< RI (Bitfield-Mask: 0x01)                              */
 /* =========================================================  IBRD  ========================================================== */
-#define ARM_UART_PL011_IBRD_BAUDDIVINT_Pos (0UL)                    /*!< BAUDDIVINT (Bit 0)                                    */
-#define ARM_UART_PL011_IBRD_BAUDDIVINT_Msk (0xffffUL)               /*!< BAUDDIVINT (Bitfield-Mask: 0xffff)                    */
+#define UART0_IBRD_BAUDDIVINT_Pos (0UL)                    /*!< BAUDDIVINT (Bit 0)                                    */
+#define UART0_IBRD_BAUDDIVINT_Msk (0xffffUL)               /*!< BAUDDIVINT (Bitfield-Mask: 0xffff)                    */
 /* =========================================================  FBRD  ========================================================== */
-#define ARM_UART_PL011_FBRD_BAUDDIVFRAC_Pos (0UL)                   /*!< BAUDDIVFRAC (Bit 0)                                   */
-#define ARM_UART_PL011_FBRD_BAUDDIVFRAC_Msk (0x3fUL)                /*!< BAUDDIVFRAC (Bitfield-Mask: 0x3f)                     */
+#define UART0_FBRD_BAUDDIVFRAC_Pos (0UL)                   /*!< BAUDDIVFRAC (Bit 0)                                   */
+#define UART0_FBRD_BAUDDIVFRAC_Msk (0x3fUL)                /*!< BAUDDIVFRAC (Bitfield-Mask: 0x3f)                     */
 /* =========================================================  LCR_H  ========================================================= */
-#define ARM_UART_PL011_LCR_H_BRK_Pos      (0UL)                     /*!< BRK (Bit 0)                                           */
-#define ARM_UART_PL011_LCR_H_BRK_Msk      (0x1UL)                   /*!< BRK (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_LCR_H_PEN_Pos      (1UL)                     /*!< PEN (Bit 1)                                           */
-#define ARM_UART_PL011_LCR_H_PEN_Msk      (0x2UL)                   /*!< PEN (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_LCR_H_EPS_Pos      (2UL)                     /*!< EPS (Bit 2)                                           */
-#define ARM_UART_PL011_LCR_H_EPS_Msk      (0x4UL)                   /*!< EPS (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_LCR_H_STP2_Pos     (3UL)                     /*!< STP2 (Bit 3)                                          */
-#define ARM_UART_PL011_LCR_H_STP2_Msk     (0x8UL)                   /*!< STP2 (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_LCR_H_FEN_Pos      (4UL)                     /*!< FEN (Bit 4)                                           */
-#define ARM_UART_PL011_LCR_H_FEN_Msk      (0x10UL)                  /*!< FEN (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_LCR_H_WLEN_Pos     (5UL)                     /*!< WLEN (Bit 5)                                          */
-#define ARM_UART_PL011_LCR_H_WLEN_Msk     (0x60UL)                  /*!< WLEN (Bitfield-Mask: 0x03)                            */
-#define ARM_UART_PL011_LCR_H_SPS_Pos      (7UL)                     /*!< SPS (Bit 7)                                           */
-#define ARM_UART_PL011_LCR_H_SPS_Msk      (0x80UL)                  /*!< SPS (Bitfield-Mask: 0x01)                             */
+#define UART0_LCR_H_BRK_Pos      (0UL)                     /*!< BRK (Bit 0)                                           */
+#define UART0_LCR_H_BRK_Msk      (0x1UL)                   /*!< BRK (Bitfield-Mask: 0x01)                             */
+#define UART0_LCR_H_PEN_Pos      (1UL)                     /*!< PEN (Bit 1)                                           */
+#define UART0_LCR_H_PEN_Msk      (0x2UL)                   /*!< PEN (Bitfield-Mask: 0x01)                             */
+#define UART0_LCR_H_EPS_Pos      (2UL)                     /*!< EPS (Bit 2)                                           */
+#define UART0_LCR_H_EPS_Msk      (0x4UL)                   /*!< EPS (Bitfield-Mask: 0x01)                             */
+#define UART0_LCR_H_STP2_Pos     (3UL)                     /*!< STP2 (Bit 3)                                          */
+#define UART0_LCR_H_STP2_Msk     (0x8UL)                   /*!< STP2 (Bitfield-Mask: 0x01)                            */
+#define UART0_LCR_H_FEN_Pos      (4UL)                     /*!< FEN (Bit 4)                                           */
+#define UART0_LCR_H_FEN_Msk      (0x10UL)                  /*!< FEN (Bitfield-Mask: 0x01)                             */
+#define UART0_LCR_H_WLEN_Pos     (5UL)                     /*!< WLEN (Bit 5)                                          */
+#define UART0_LCR_H_WLEN_Msk     (0x60UL)                  /*!< WLEN (Bitfield-Mask: 0x03)                            */
+#define UART0_LCR_H_SPS_Pos      (7UL)                     /*!< SPS (Bit 7)                                           */
+#define UART0_LCR_H_SPS_Msk      (0x80UL)                  /*!< SPS (Bitfield-Mask: 0x01)                             */
 /* ==========================================================  CR  =========================================================== */
-#define ARM_UART_PL011_CR_UARTEN_Pos      (0UL)                     /*!< UARTEN (Bit 0)                                        */
-#define ARM_UART_PL011_CR_UARTEN_Msk      (0x1UL)                   /*!< UARTEN (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_CR_SIREN_Pos       (1UL)                     /*!< SIREN (Bit 1)                                         */
-#define ARM_UART_PL011_CR_SIREN_Msk       (0x2UL)                   /*!< SIREN (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_CR_SIRLP_Pos       (2UL)                     /*!< SIRLP (Bit 2)                                         */
-#define ARM_UART_PL011_CR_SIRLP_Msk       (0x4UL)                   /*!< SIRLP (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_CR_TXE_Pos         (8UL)                     /*!< TXE (Bit 8)                                           */
-#define ARM_UART_PL011_CR_TXE_Msk         (0x100UL)                 /*!< TXE (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_CR_RXE_Pos         (9UL)                     /*!< RXE (Bit 9)                                           */
-#define ARM_UART_PL011_CR_RXE_Msk         (0x200UL)                 /*!< RXE (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_CR_DTR_Pos         (10UL)                    /*!< DTR (Bit 10)                                          */
-#define ARM_UART_PL011_CR_DTR_Msk         (0x400UL)                 /*!< DTR (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_CR_RTS_Pos         (11UL)                    /*!< RTS (Bit 11)                                          */
-#define ARM_UART_PL011_CR_RTS_Msk         (0x800UL)                 /*!< RTS (Bitfield-Mask: 0x01)                             */
-#define ARM_UART_PL011_CR_RTSEN_Pos       (14UL)                    /*!< RTSEN (Bit 14)                                        */
-#define ARM_UART_PL011_CR_RTSEN_Msk       (0x4000UL)                /*!< RTSEN (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_CR_CTSEN_Pos       (15UL)                    /*!< CTSEN (Bit 15)                                        */
-#define ARM_UART_PL011_CR_CTSEN_Msk       (0x8000UL)                /*!< CTSEN (Bitfield-Mask: 0x01)                           */
+#define UART0_CR_UARTEN_Pos      (0UL)                     /*!< UARTEN (Bit 0)                                        */
+#define UART0_CR_UARTEN_Msk      (0x1UL)                   /*!< UARTEN (Bitfield-Mask: 0x01)                          */
+#define UART0_CR_SIREN_Pos       (1UL)                     /*!< SIREN (Bit 1)                                         */
+#define UART0_CR_SIREN_Msk       (0x2UL)                   /*!< SIREN (Bitfield-Mask: 0x01)                           */
+#define UART0_CR_SIRLP_Pos       (2UL)                     /*!< SIRLP (Bit 2)                                         */
+#define UART0_CR_SIRLP_Msk       (0x4UL)                   /*!< SIRLP (Bitfield-Mask: 0x01)                           */
+#define UART0_CR_TXE_Pos         (8UL)                     /*!< TXE (Bit 8)                                           */
+#define UART0_CR_TXE_Msk         (0x100UL)                 /*!< TXE (Bitfield-Mask: 0x01)                             */
+#define UART0_CR_RXE_Pos         (9UL)                     /*!< RXE (Bit 9)                                           */
+#define UART0_CR_RXE_Msk         (0x200UL)                 /*!< RXE (Bitfield-Mask: 0x01)                             */
+#define UART0_CR_DTR_Pos         (10UL)                    /*!< DTR (Bit 10)                                          */
+#define UART0_CR_DTR_Msk         (0x400UL)                 /*!< DTR (Bitfield-Mask: 0x01)                             */
+#define UART0_CR_RTS_Pos         (11UL)                    /*!< RTS (Bit 11)                                          */
+#define UART0_CR_RTS_Msk         (0x800UL)                 /*!< RTS (Bitfield-Mask: 0x01)                             */
+#define UART0_CR_RTSEN_Pos       (14UL)                    /*!< RTSEN (Bit 14)                                        */
+#define UART0_CR_RTSEN_Msk       (0x4000UL)                /*!< RTSEN (Bitfield-Mask: 0x01)                           */
+#define UART0_CR_CTSEN_Pos       (15UL)                    /*!< CTSEN (Bit 15)                                        */
+#define UART0_CR_CTSEN_Msk       (0x8000UL)                /*!< CTSEN (Bitfield-Mask: 0x01)                           */
 /* =========================================================  IFLS  ========================================================== */
-#define ARM_UART_PL011_IFLS_TXIFLSEL_Pos  (0UL)                     /*!< TXIFLSEL (Bit 0)                                      */
-#define ARM_UART_PL011_IFLS_TXIFLSEL_Msk  (0x7UL)                   /*!< TXIFLSEL (Bitfield-Mask: 0x07)                        */
-#define ARM_UART_PL011_IFLS_RXIFLSEL_Pos  (3UL)                     /*!< RXIFLSEL (Bit 3)                                      */
-#define ARM_UART_PL011_IFLS_RXIFLSEL_Msk  (0x38UL)                  /*!< RXIFLSEL (Bitfield-Mask: 0x07)                        */
+#define UART0_IFLS_TXIFLSEL_Pos  (0UL)                     /*!< TXIFLSEL (Bit 0)                                      */
+#define UART0_IFLS_TXIFLSEL_Msk  (0x7UL)                   /*!< TXIFLSEL (Bitfield-Mask: 0x07)                        */
+#define UART0_IFLS_RXIFLSEL_Pos  (3UL)                     /*!< RXIFLSEL (Bit 3)                                      */
+#define UART0_IFLS_RXIFLSEL_Msk  (0x38UL)                  /*!< RXIFLSEL (Bitfield-Mask: 0x07)                        */
 /* =========================================================  IMSC  ========================================================== */
-#define ARM_UART_PL011_IMSC_RIMIM_Pos     (0UL)                     /*!< RIMIM (Bit 0)                                         */
-#define ARM_UART_PL011_IMSC_RIMIM_Msk     (0x1UL)                   /*!< RIMIM (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_IMSC_CTSMIM_Pos    (1UL)                     /*!< CTSMIM (Bit 1)                                        */
-#define ARM_UART_PL011_IMSC_CTSMIM_Msk    (0x2UL)                   /*!< CTSMIM (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_IMSC_DCDMIM_Pos    (2UL)                     /*!< DCDMIM (Bit 2)                                        */
-#define ARM_UART_PL011_IMSC_DCDMIM_Msk    (0x4UL)                   /*!< DCDMIM (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_IMSC_DSRMIM_Pos    (3UL)                     /*!< DSRMIM (Bit 3)                                        */
-#define ARM_UART_PL011_IMSC_DSRMIM_Msk    (0x8UL)                   /*!< DSRMIM (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_IMSC_RXIM_Pos      (4UL)                     /*!< RXIM (Bit 4)                                          */
-#define ARM_UART_PL011_IMSC_RXIM_Msk      (0x10UL)                  /*!< RXIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_TXIM_Pos      (5UL)                     /*!< TXIM (Bit 5)                                          */
-#define ARM_UART_PL011_IMSC_TXIM_Msk      (0x20UL)                  /*!< TXIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_RTIM_Pos      (6UL)                     /*!< RTIM (Bit 6)                                          */
-#define ARM_UART_PL011_IMSC_RTIM_Msk      (0x40UL)                  /*!< RTIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_FEIM_Pos      (7UL)                     /*!< FEIM (Bit 7)                                          */
-#define ARM_UART_PL011_IMSC_FEIM_Msk      (0x80UL)                  /*!< FEIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_PEIM_Pos      (8UL)                     /*!< PEIM (Bit 8)                                          */
-#define ARM_UART_PL011_IMSC_PEIM_Msk      (0x100UL)                 /*!< PEIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_BEIM_Pos      (9UL)                     /*!< BEIM (Bit 9)                                          */
-#define ARM_UART_PL011_IMSC_BEIM_Msk      (0x200UL)                 /*!< BEIM (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_IMSC_OEIM_Pos      (10UL)                    /*!< OEIM (Bit 10)                                         */
-#define ARM_UART_PL011_IMSC_OEIM_Msk      (0x400UL)                 /*!< OEIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_RIMIM_Pos     (0UL)                     /*!< RIMIM (Bit 0)                                         */
+#define UART0_IMSC_RIMIM_Msk     (0x1UL)                   /*!< RIMIM (Bitfield-Mask: 0x01)                           */
+#define UART0_IMSC_CTSMIM_Pos    (1UL)                     /*!< CTSMIM (Bit 1)                                        */
+#define UART0_IMSC_CTSMIM_Msk    (0x2UL)                   /*!< CTSMIM (Bitfield-Mask: 0x01)                          */
+#define UART0_IMSC_DCDMIM_Pos    (2UL)                     /*!< DCDMIM (Bit 2)                                        */
+#define UART0_IMSC_DCDMIM_Msk    (0x4UL)                   /*!< DCDMIM (Bitfield-Mask: 0x01)                          */
+#define UART0_IMSC_DSRMIM_Pos    (3UL)                     /*!< DSRMIM (Bit 3)                                        */
+#define UART0_IMSC_DSRMIM_Msk    (0x8UL)                   /*!< DSRMIM (Bitfield-Mask: 0x01)                          */
+#define UART0_IMSC_RXIM_Pos      (4UL)                     /*!< RXIM (Bit 4)                                          */
+#define UART0_IMSC_RXIM_Msk      (0x10UL)                  /*!< RXIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_TXIM_Pos      (5UL)                     /*!< TXIM (Bit 5)                                          */
+#define UART0_IMSC_TXIM_Msk      (0x20UL)                  /*!< TXIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_RTIM_Pos      (6UL)                     /*!< RTIM (Bit 6)                                          */
+#define UART0_IMSC_RTIM_Msk      (0x40UL)                  /*!< RTIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_FEIM_Pos      (7UL)                     /*!< FEIM (Bit 7)                                          */
+#define UART0_IMSC_FEIM_Msk      (0x80UL)                  /*!< FEIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_PEIM_Pos      (8UL)                     /*!< PEIM (Bit 8)                                          */
+#define UART0_IMSC_PEIM_Msk      (0x100UL)                 /*!< PEIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_BEIM_Pos      (9UL)                     /*!< BEIM (Bit 9)                                          */
+#define UART0_IMSC_BEIM_Msk      (0x200UL)                 /*!< BEIM (Bitfield-Mask: 0x01)                            */
+#define UART0_IMSC_OEIM_Pos      (10UL)                    /*!< OEIM (Bit 10)                                         */
+#define UART0_IMSC_OEIM_Msk      (0x400UL)                 /*!< OEIM (Bitfield-Mask: 0x01)                            */
 /* ==========================================================  RIS  ========================================================== */
-#define ARM_UART_PL011_RIS_RIRMIS_Pos     (0UL)                     /*!< RIRMIS (Bit 0)                                        */
-#define ARM_UART_PL011_RIS_RIRMIS_Msk     (0x1UL)                   /*!< RIRMIS (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_RIS_CTSRMIS_Pos    (1UL)                     /*!< CTSRMIS (Bit 1)                                       */
-#define ARM_UART_PL011_RIS_CTSRMIS_Msk    (0x2UL)                   /*!< CTSRMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_RIS_DCDRMIS_Pos    (2UL)                     /*!< DCDRMIS (Bit 2)                                       */
-#define ARM_UART_PL011_RIS_DCDRMIS_Msk    (0x4UL)                   /*!< DCDRMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_RIS_DSRRMIS_Pos    (3UL)                     /*!< DSRRMIS (Bit 3)                                       */
-#define ARM_UART_PL011_RIS_DSRRMIS_Msk    (0x8UL)                   /*!< DSRRMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_RIS_RXRIS_Pos      (4UL)                     /*!< RXRIS (Bit 4)                                         */
-#define ARM_UART_PL011_RIS_RXRIS_Msk      (0x10UL)                  /*!< RXRIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_TXRIS_Pos      (5UL)                     /*!< TXRIS (Bit 5)                                         */
-#define ARM_UART_PL011_RIS_TXRIS_Msk      (0x20UL)                  /*!< TXRIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_RTRIS_Pos      (6UL)                     /*!< RTRIS (Bit 6)                                         */
-#define ARM_UART_PL011_RIS_RTRIS_Msk      (0x40UL)                  /*!< RTRIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_FERIS_Pos      (7UL)                     /*!< FERIS (Bit 7)                                         */
-#define ARM_UART_PL011_RIS_FERIS_Msk      (0x80UL)                  /*!< FERIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_PERIS_Pos      (8UL)                     /*!< PERIS (Bit 8)                                         */
-#define ARM_UART_PL011_RIS_PERIS_Msk      (0x100UL)                 /*!< PERIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_BERIS_Pos      (9UL)                     /*!< BERIS (Bit 9)                                         */
-#define ARM_UART_PL011_RIS_BERIS_Msk      (0x200UL)                 /*!< BERIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_RIS_OERIS_Pos      (10UL)                    /*!< OERIS (Bit 10)                                        */
-#define ARM_UART_PL011_RIS_OERIS_Msk      (0x400UL)                 /*!< OERIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_RIRMIS_Pos     (0UL)                     /*!< RIRMIS (Bit 0)                                        */
+#define UART0_RIS_RIRMIS_Msk     (0x1UL)                   /*!< RIRMIS (Bitfield-Mask: 0x01)                          */
+#define UART0_RIS_CTSRMIS_Pos    (1UL)                     /*!< CTSRMIS (Bit 1)                                       */
+#define UART0_RIS_CTSRMIS_Msk    (0x2UL)                   /*!< CTSRMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_RIS_DCDRMIS_Pos    (2UL)                     /*!< DCDRMIS (Bit 2)                                       */
+#define UART0_RIS_DCDRMIS_Msk    (0x4UL)                   /*!< DCDRMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_RIS_DSRRMIS_Pos    (3UL)                     /*!< DSRRMIS (Bit 3)                                       */
+#define UART0_RIS_DSRRMIS_Msk    (0x8UL)                   /*!< DSRRMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_RIS_RXRIS_Pos      (4UL)                     /*!< RXRIS (Bit 4)                                         */
+#define UART0_RIS_RXRIS_Msk      (0x10UL)                  /*!< RXRIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_TXRIS_Pos      (5UL)                     /*!< TXRIS (Bit 5)                                         */
+#define UART0_RIS_TXRIS_Msk      (0x20UL)                  /*!< TXRIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_RTRIS_Pos      (6UL)                     /*!< RTRIS (Bit 6)                                         */
+#define UART0_RIS_RTRIS_Msk      (0x40UL)                  /*!< RTRIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_FERIS_Pos      (7UL)                     /*!< FERIS (Bit 7)                                         */
+#define UART0_RIS_FERIS_Msk      (0x80UL)                  /*!< FERIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_PERIS_Pos      (8UL)                     /*!< PERIS (Bit 8)                                         */
+#define UART0_RIS_PERIS_Msk      (0x100UL)                 /*!< PERIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_BERIS_Pos      (9UL)                     /*!< BERIS (Bit 9)                                         */
+#define UART0_RIS_BERIS_Msk      (0x200UL)                 /*!< BERIS (Bitfield-Mask: 0x01)                           */
+#define UART0_RIS_OERIS_Pos      (10UL)                    /*!< OERIS (Bit 10)                                        */
+#define UART0_RIS_OERIS_Msk      (0x400UL)                 /*!< OERIS (Bitfield-Mask: 0x01)                           */
 /* ==========================================================  MIS  ========================================================== */
-#define ARM_UART_PL011_MIS_RIMMIS_Pos     (0UL)                     /*!< RIMMIS (Bit 0)                                        */
-#define ARM_UART_PL011_MIS_RIMMIS_Msk     (0x1UL)                   /*!< RIMMIS (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_MIS_CTSMMIS_Pos    (1UL)                     /*!< CTSMMIS (Bit 1)                                       */
-#define ARM_UART_PL011_MIS_CTSMMIS_Msk    (0x2UL)                   /*!< CTSMMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_MIS_DCDMMIS_Pos    (2UL)                     /*!< DCDMMIS (Bit 2)                                       */
-#define ARM_UART_PL011_MIS_DCDMMIS_Msk    (0x4UL)                   /*!< DCDMMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_MIS_DSRMMIS_Pos    (3UL)                     /*!< DSRMMIS (Bit 3)                                       */
-#define ARM_UART_PL011_MIS_DSRMMIS_Msk    (0x8UL)                   /*!< DSRMMIS (Bitfield-Mask: 0x01)                         */
-#define ARM_UART_PL011_MIS_RXMIS_Pos      (4UL)                     /*!< RXMIS (Bit 4)                                         */
-#define ARM_UART_PL011_MIS_RXMIS_Msk      (0x10UL)                  /*!< RXMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_TXMIS_Pos      (5UL)                     /*!< TXMIS (Bit 5)                                         */
-#define ARM_UART_PL011_MIS_TXMIS_Msk      (0x20UL)                  /*!< TXMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_RTMIS_Pos      (6UL)                     /*!< RTMIS (Bit 6)                                         */
-#define ARM_UART_PL011_MIS_RTMIS_Msk      (0x40UL)                  /*!< RTMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_FEMIS_Pos      (7UL)                     /*!< FEMIS (Bit 7)                                         */
-#define ARM_UART_PL011_MIS_FEMIS_Msk      (0x80UL)                  /*!< FEMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_PEMIS_Pos      (8UL)                     /*!< PEMIS (Bit 8)                                         */
-#define ARM_UART_PL011_MIS_PEMIS_Msk      (0x100UL)                 /*!< PEMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_BEMIS_Pos      (9UL)                     /*!< BEMIS (Bit 9)                                         */
-#define ARM_UART_PL011_MIS_BEMIS_Msk      (0x200UL)                 /*!< BEMIS (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_MIS_OEMIS_Pos      (10UL)                    /*!< OEMIS (Bit 10)                                        */
-#define ARM_UART_PL011_MIS_OEMIS_Msk      (0x400UL)                 /*!< OEMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_RIMMIS_Pos     (0UL)                     /*!< RIMMIS (Bit 0)                                        */
+#define UART0_MIS_RIMMIS_Msk     (0x1UL)                   /*!< RIMMIS (Bitfield-Mask: 0x01)                          */
+#define UART0_MIS_CTSMMIS_Pos    (1UL)                     /*!< CTSMMIS (Bit 1)                                       */
+#define UART0_MIS_CTSMMIS_Msk    (0x2UL)                   /*!< CTSMMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_MIS_DCDMMIS_Pos    (2UL)                     /*!< DCDMMIS (Bit 2)                                       */
+#define UART0_MIS_DCDMMIS_Msk    (0x4UL)                   /*!< DCDMMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_MIS_DSRMMIS_Pos    (3UL)                     /*!< DSRMMIS (Bit 3)                                       */
+#define UART0_MIS_DSRMMIS_Msk    (0x8UL)                   /*!< DSRMMIS (Bitfield-Mask: 0x01)                         */
+#define UART0_MIS_RXMIS_Pos      (4UL)                     /*!< RXMIS (Bit 4)                                         */
+#define UART0_MIS_RXMIS_Msk      (0x10UL)                  /*!< RXMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_TXMIS_Pos      (5UL)                     /*!< TXMIS (Bit 5)                                         */
+#define UART0_MIS_TXMIS_Msk      (0x20UL)                  /*!< TXMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_RTMIS_Pos      (6UL)                     /*!< RTMIS (Bit 6)                                         */
+#define UART0_MIS_RTMIS_Msk      (0x40UL)                  /*!< RTMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_FEMIS_Pos      (7UL)                     /*!< FEMIS (Bit 7)                                         */
+#define UART0_MIS_FEMIS_Msk      (0x80UL)                  /*!< FEMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_PEMIS_Pos      (8UL)                     /*!< PEMIS (Bit 8)                                         */
+#define UART0_MIS_PEMIS_Msk      (0x100UL)                 /*!< PEMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_BEMIS_Pos      (9UL)                     /*!< BEMIS (Bit 9)                                         */
+#define UART0_MIS_BEMIS_Msk      (0x200UL)                 /*!< BEMIS (Bitfield-Mask: 0x01)                           */
+#define UART0_MIS_OEMIS_Pos      (10UL)                    /*!< OEMIS (Bit 10)                                        */
+#define UART0_MIS_OEMIS_Msk      (0x400UL)                 /*!< OEMIS (Bitfield-Mask: 0x01)                           */
 /* ==========================================================  ICR  ========================================================== */
-#define ARM_UART_PL011_ICR_RIMIC_Pos      (0UL)                     /*!< RIMIC (Bit 0)                                         */
-#define ARM_UART_PL011_ICR_RIMIC_Msk      (0x1UL)                   /*!< RIMIC (Bitfield-Mask: 0x01)                           */
-#define ARM_UART_PL011_ICR_CTSMIC_Pos     (1UL)                     /*!< CTSMIC (Bit 1)                                        */
-#define ARM_UART_PL011_ICR_CTSMIC_Msk     (0x2UL)                   /*!< CTSMIC (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_ICR_DCDMIC_Pos     (2UL)                     /*!< DCDMIC (Bit 2)                                        */
-#define ARM_UART_PL011_ICR_DCDMIC_Msk     (0x4UL)                   /*!< DCDMIC (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_ICR_DSRMIC_Pos     (3UL)                     /*!< DSRMIC (Bit 3)                                        */
-#define ARM_UART_PL011_ICR_DSRMIC_Msk     (0x8UL)                   /*!< DSRMIC (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_ICR_RXIC_Pos       (4UL)                     /*!< RXIC (Bit 4)                                          */
-#define ARM_UART_PL011_ICR_RXIC_Msk       (0x10UL)                  /*!< RXIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_TXIC_Pos       (5UL)                     /*!< TXIC (Bit 5)                                          */
-#define ARM_UART_PL011_ICR_TXIC_Msk       (0x20UL)                  /*!< TXIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_RTIC_Pos       (6UL)                     /*!< RTIC (Bit 6)                                          */
-#define ARM_UART_PL011_ICR_RTIC_Msk       (0x40UL)                  /*!< RTIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_FEIC_Pos       (7UL)                     /*!< FEIC (Bit 7)                                          */
-#define ARM_UART_PL011_ICR_FEIC_Msk       (0x80UL)                  /*!< FEIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_PEIC_Pos       (8UL)                     /*!< PEIC (Bit 8)                                          */
-#define ARM_UART_PL011_ICR_PEIC_Msk       (0x100UL)                 /*!< PEIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_BEIC_Pos       (9UL)                     /*!< BEIC (Bit 9)                                          */
-#define ARM_UART_PL011_ICR_BEIC_Msk       (0x200UL)                 /*!< BEIC (Bitfield-Mask: 0x01)                            */
-#define ARM_UART_PL011_ICR_OEIC_Pos       (10UL)                    /*!< OEIC (Bit 10)                                         */
-#define ARM_UART_PL011_ICR_OEIC_Msk       (0x400UL)                 /*!< OEIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_RIMIC_Pos      (0UL)                     /*!< RIMIC (Bit 0)                                         */
+#define UART0_ICR_RIMIC_Msk      (0x1UL)                   /*!< RIMIC (Bitfield-Mask: 0x01)                           */
+#define UART0_ICR_CTSMIC_Pos     (1UL)                     /*!< CTSMIC (Bit 1)                                        */
+#define UART0_ICR_CTSMIC_Msk     (0x2UL)                   /*!< CTSMIC (Bitfield-Mask: 0x01)                          */
+#define UART0_ICR_DCDMIC_Pos     (2UL)                     /*!< DCDMIC (Bit 2)                                        */
+#define UART0_ICR_DCDMIC_Msk     (0x4UL)                   /*!< DCDMIC (Bitfield-Mask: 0x01)                          */
+#define UART0_ICR_DSRMIC_Pos     (3UL)                     /*!< DSRMIC (Bit 3)                                        */
+#define UART0_ICR_DSRMIC_Msk     (0x8UL)                   /*!< DSRMIC (Bitfield-Mask: 0x01)                          */
+#define UART0_ICR_RXIC_Pos       (4UL)                     /*!< RXIC (Bit 4)                                          */
+#define UART0_ICR_RXIC_Msk       (0x10UL)                  /*!< RXIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_TXIC_Pos       (5UL)                     /*!< TXIC (Bit 5)                                          */
+#define UART0_ICR_TXIC_Msk       (0x20UL)                  /*!< TXIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_RTIC_Pos       (6UL)                     /*!< RTIC (Bit 6)                                          */
+#define UART0_ICR_RTIC_Msk       (0x40UL)                  /*!< RTIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_FEIC_Pos       (7UL)                     /*!< FEIC (Bit 7)                                          */
+#define UART0_ICR_FEIC_Msk       (0x80UL)                  /*!< FEIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_PEIC_Pos       (8UL)                     /*!< PEIC (Bit 8)                                          */
+#define UART0_ICR_PEIC_Msk       (0x100UL)                 /*!< PEIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_BEIC_Pos       (9UL)                     /*!< BEIC (Bit 9)                                          */
+#define UART0_ICR_BEIC_Msk       (0x200UL)                 /*!< BEIC (Bitfield-Mask: 0x01)                            */
+#define UART0_ICR_OEIC_Pos       (10UL)                    /*!< OEIC (Bit 10)                                         */
+#define UART0_ICR_OEIC_Msk       (0x400UL)                 /*!< OEIC (Bitfield-Mask: 0x01)                            */
 /* =========================================================  DMACR  ========================================================= */
-#define ARM_UART_PL011_DMACR_RXDMAE_Pos   (0UL)                     /*!< RXDMAE (Bit 0)                                        */
-#define ARM_UART_PL011_DMACR_RXDMAE_Msk   (0x1UL)                   /*!< RXDMAE (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_DMACR_TXDMAE_Pos   (1UL)                     /*!< TXDMAE (Bit 1)                                        */
-#define ARM_UART_PL011_DMACR_TXDMAE_Msk   (0x2UL)                   /*!< TXDMAE (Bitfield-Mask: 0x01)                          */
-#define ARM_UART_PL011_DMACR_DMAONERR_Pos (2UL)                     /*!< DMAONERR (Bit 2)                                      */
-#define ARM_UART_PL011_DMACR_DMAONERR_Msk (0x4UL)                   /*!< DMAONERR (Bitfield-Mask: 0x01)                        */
+#define UART0_DMACR_RXDMAE_Pos   (0UL)                     /*!< RXDMAE (Bit 0)                                        */
+#define UART0_DMACR_RXDMAE_Msk   (0x1UL)                   /*!< RXDMAE (Bitfield-Mask: 0x01)                          */
+#define UART0_DMACR_TXDMAE_Pos   (1UL)                     /*!< TXDMAE (Bit 1)                                        */
+#define UART0_DMACR_TXDMAE_Msk   (0x2UL)                   /*!< TXDMAE (Bitfield-Mask: 0x01)                          */
+#define UART0_DMACR_DMAONERR_Pos (2UL)                     /*!< DMAONERR (Bit 2)                                      */
+#define UART0_DMACR_DMAONERR_Msk (0x4UL)                   /*!< DMAONERR (Bitfield-Mask: 0x01)                        */
 
 
 /* =========================================================================================================================== */
