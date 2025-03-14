@@ -67,12 +67,16 @@ int main(void)
 	LedInit();
 	DispInit();
 
+	u32 Backlight = 0;
+	i32 Delta = 1;
 	while(1)
 	{
 		ConsolePrintf("Hello world: %d\n", Counter++);
-		BusyWaitMs(100000);
-		GpioSet(DISP_GPIO_BACKLIGHT);
-		BusyWaitMs(100000);
-		GpioClear(DISP_GPIO_BACKLIGHT);
+		PrintClocks();
+		DispSetBacklight(Backlight);
+		Backlight += Delta;
+		if(Backlight == 999 || Backlight == 0) {
+			Delta = -Delta;
+		}
 	}
 }

@@ -8,8 +8,10 @@
 #define DISP_GPIO_TP_IRQ 11
 #define DISP_GPIO_BACKLIGHT 18
 
-static void DispInit(void)
+static b32 DispInit(void)
 {
+	b32 Result = 0;
+
 	GpioSelectFunction(DISP_GPIO_TP_CS, GPIO_FUNCTION_ALT0);
 	GpioSelectFunction(DISP_GPIO_LCD_CS, GPIO_FUNCTION_ALT0);
 	GpioSelectFunction(DISP_GPIO_LCD_MISO, GPIO_FUNCTION_ALT0);
@@ -18,7 +20,8 @@ static void DispInit(void)
 	GpioSelectFunction(DISP_GPIO_LCD_RS, GPIO_FUNCTION_OUTPUT);
 	GpioSelectFunction(DISP_GPIO_RESET, GPIO_FUNCTION_OUTPUT);
 	GpioSelectFunction(DISP_GPIO_TP_IRQ, GPIO_FUNCTION_INPUT);
-	GpioSelectFunction(DISP_GPIO_BACKLIGHT, GPIO_FUNCTION_OUTPUT);
+	// GpioSelectFunction(DISP_GPIO_BACKLIGHT, GPIO_FUNCTION_OUTPUT);
+	GpioSelectFunction(DISP_GPIO_BACKLIGHT, GPIO_FUNCTION_ALT5);
 
 	GpioControlPull(DISP_GPIO_TP_CS, GPIO_PULL_OFF);
 	GpioControlPull(DISP_GPIO_LCD_CS, GPIO_PULL_OFF);
@@ -29,4 +32,21 @@ static void DispInit(void)
 	GpioControlPull(DISP_GPIO_RESET, GPIO_PULL_OFF);
 	GpioControlPull(DISP_GPIO_TP_IRQ, GPIO_PULL_UP);
 	GpioControlPull(DISP_GPIO_BACKLIGHT, GPIO_PULL_OFF);
+
+#if 1
+	if(MboxSetClockRate(MBOX_CLOCK_PWM, 100000000, 0))
+	{
+		PWM0->CTL = PWM0_CTL_PWEN1_Msk|PWM0_CTL_RPTL1_Msk;
+		PWM0->RNG1 = 1000 - 1;
+		PWM0->DAT1 = 500 - 1;
+		Result = 1;
+	}
+#endif
+
+	return Result;
+}
+
+static void DispSetBacklight(u32 Value)
+{
+	PWM0->DAT1 = Value;
 }
