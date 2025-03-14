@@ -26,10 +26,8 @@ void OnProjectLoad (void) {
   Project.SetHostIF ("USB", "852005481");
   Project.SetTargetIF ("JTAG");
   Project.SetTIFSpeed ("12 MHz");
-  Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
-  Project.AddPathSubstitute ("/home/adamk/piapp", "$(ProjectDir)");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/ARM11.svd");
-  Project.AddSvdFile ("/home/adamk/piapp/misc/bcm2835.svd");
+  Project.AddSvdFile ("$(ProjectDir)/misc/bcm2835.svd");
   //
   // User settings
   //

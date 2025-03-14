@@ -72,7 +72,6 @@ int main(void)
 	while(1)
 	{
 		ConsolePrintf("Hello world: %d\n", Counter++);
-		PrintClocks();
 		DispSetBacklight(Backlight);
 		Backlight += Delta;
 		if(Backlight == 999 || Backlight == 0) {
