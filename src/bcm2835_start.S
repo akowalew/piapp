@@ -35,6 +35,11 @@ fiq_handler:
 reset_handler:
     ldr sp, =stack_top
 
+    // Enable caches
+    mrc p15, 0, r0, c1, c0, 0
+    orr r0, r0, #(1 << 12)
+    mcr p15, 0, r0, c1, c0, 0
+
 zero_bss:
     ldr r0, =_sbss
     ldr r1, =_ebss

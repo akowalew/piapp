@@ -16,8 +16,27 @@
 #include "console.c"
 #include "led.h"
 #include "led.c"
-#include "disp.h"
-#include "disp.c"
+#include "sd.h"
+#include "sd.c"
+#include "fb.h"
+#include "fb.c"
+
+static void ConfigureGpioForAlt5JtagAndAlt4Trst(void)
+{
+	GpioSelectFunction(4, GPIO_FUNCTION_ALT5);
+	GpioSelectFunction(5, GPIO_FUNCTION_ALT5);
+	GpioSelectFunction(6, GPIO_FUNCTION_ALT5);
+	GpioSelectFunction(12, GPIO_FUNCTION_ALT5);
+	GpioSelectFunction(13, GPIO_FUNCTION_ALT5);
+	GpioSelectFunction(22, GPIO_FUNCTION_ALT4);
+
+	GpioControlPull(4, GPIO_PULL_OFF);
+	GpioControlPull(5, GPIO_PULL_OFF);
+	GpioControlPull(6, GPIO_PULL_OFF);
+	GpioControlPull(12, GPIO_PULL_OFF);
+	GpioControlPull(13, GPIO_PULL_OFF);
+	GpioControlPull(22, GPIO_PULL_OFF);
+}
 
 static void PrintClocks(void)
 {
@@ -42,40 +61,55 @@ static void PrintClocks(void)
 	}
 }
 
-static void ConfigureGpioForAlt5JtagAndAlt4Trst(void)
-{
-	GpioSelectFunction(4, GPIO_FUNCTION_ALT5);
-	GpioSelectFunction(5, GPIO_FUNCTION_ALT5);
-	GpioSelectFunction(6, GPIO_FUNCTION_ALT5);
-	GpioSelectFunction(12, GPIO_FUNCTION_ALT5);
-	GpioSelectFunction(13, GPIO_FUNCTION_ALT5);
-	GpioSelectFunction(22, GPIO_FUNCTION_ALT4);
-
-	GpioControlPull(4, GPIO_PULL_OFF);
-	GpioControlPull(5, GPIO_PULL_OFF);
-	GpioControlPull(6, GPIO_PULL_OFF);
-	GpioControlPull(12, GPIO_PULL_OFF);
-	GpioControlPull(13, GPIO_PULL_OFF);
-	GpioControlPull(22, GPIO_PULL_OFF);
-}
-
 int main(void)
 {
 	u32 Counter = 0;
 	ConsoleInit();
 	ConfigureGpioForAlt5JtagAndAlt4Trst();
-	LedInit();
-	DispInit();
+
+	SdInit();
+	FbInit();
+
+	FillRectangle(0, 0, FbWidth-1, FbHeight-1, 0);
+	FbSyncAndSwapBuffers();
+	FillRectangle(0, 0, FbWidth-1, FbHeight-1, 0);
+	FbSyncAndSwapBuffers();
 
 	u32 Backlight = 0;
-	i32 Delta = 1;
+	i32 Delta = 111;
+	u32 X = 0;
+	u32 Y = 0;
+	u32 Color = 127;
+	i32 DeltaColor = 1;
+
+	PrintClocks();
+
 	while(1)
 	{
-		ConsolePrintf("Hello world: %d\n", Counter++);
-		DispSetBacklight(Backlight);
-		Backlight += Delta;
-		if(Backlight == 999 || Backlight == 0) {
-			Delta = -Delta;
+		u64 Begin = GetSystemTimer();
+
+		FillRectangle(0, 0, FbWidth-1, FbHeight-1, 0);
+		FillRectangle(0, 0, FbWidth-1, FbHeight-1, Color);
+
+		Color += DeltaColor;
+		if(Color == 255 || Color == 0)
+		{
+			DeltaColor = -DeltaColor;
 		}
+
+		// ConsolePrintf("Hello world: %d\n", Counter++);
+		// BusyWaitUs(1000000);
+
+		// DispSetBacklight(Backlight);
+		// Backlight += Delta;
+		// if(Backlight == 999 || Backlight == 0) {
+		// 	Delta = -Delta;
+		// }
+
+		u64 End = GetSystemTimer();
+		u64 Diff = (End - Begin);
+		ConsolePrintf("Diff: %uus\n", (u32)Diff);
+
+		FbSyncAndSwapBuffers();
 	}
 }

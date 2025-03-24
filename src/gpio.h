@@ -25,5 +25,6 @@ static void GpioControlPull(u32 N, u32 P)
     BusyWait(150);
     (&GPIO->GPIO_PUP_PDN_CNTRL_REG1)[(N)>>5] = 1 << ((N)&31);
     BusyWait(150);
+    GPIO->GPIO_PUP_PDN_CNTRL_REG0 = 0;
     GPIO->GPIO_PUP_PDN_CNTRL_REG1 = 0;
 }

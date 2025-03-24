@@ -81,18 +81,6 @@ static void MboxCallForever(u8 Channel)
     }
 }
 
-static void MboxWaitForVerticalSync(void)
-{
-    Mbox[0] = 7 * 4;
-    Mbox[1] = MBOX_REQUEST;
-    Mbox[2] = MBOX_TAG_FRAMEBUFFER_SET_VSYNC;
-    Mbox[3] = 1 * 4;
-    Mbox[4] = 0;
-    Mbox[5] = 0;
-    Mbox[6] = MBOX_TAG_LAST;
-    MboxCallForever(MBOX_CH_PROP);
-}
-
 static b32 MboxGetBoardSerialNumber(u64* Value)
 {
     u32 Result = 0;

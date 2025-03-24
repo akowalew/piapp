@@ -6,7 +6,7 @@ static void BusyWait(unsigned int Delay)
 	}
 }
 
-static void BusyWaitMs(unsigned int Millis)
+static void BusyWaitUs(unsigned int Millis)
 {
 	u64 Time;
 	u64 Start = GetSystemTimer();
@@ -16,35 +16,59 @@ static void BusyWaitMs(unsigned int Millis)
 	}
 }
 
-// inline static u64 ReadCpuCounter(void)
-// {
-// 	register u64 Result;
+#define BusyWaitMs(x) BusyWaitUs((x) * 1000)
 
-// 	asm volatile("mrs %0, cntpct_el0" : "=r" (Result));
+#if 0
+inline static u64 ReadCpuCounter(void)
+{
+	register u64 Result;
 
-// 	return Result;
-// }
+	asm volatile("mrs %0, cntpct_el0" : "=r" (Result));
 
-// inline static u64 ReadCpuFrequency(void)
-// {
-// 	register u64 Result;
+	return Result;
+}
 
-// 	asm volatile("mrs %0, cntfrq_el0" : "=r" (Result));
+inline static u64 ReadCpuFrequency(void)
+{
+	register u64 Result;
 
-// 	return Result;
-// }
+	asm volatile("mrs %0, cntfrq_el0" : "=r" (Result));
 
-// static void BusyWaitMsCpu(unsigned int Millis)
-// {
-// 	u64 Now;
-// 	u64 Start = ReadCpuCounter();
-// 	u64 Frequency = ReadCpuFrequency();
-// 	u64 Counts = ((Frequency / 1000) * Millis) / 1000;
-// 	while((Now = ReadCpuCounter()) - Start < Counts)
-// 	{
-// 		// Do nothing
-// 	}
-// }
+	return Result;
+}
+#else
+inline static u64 ReadCpuCounter(void)
+{
+	u64 Result;
+
+	u32 Hi, Lo;
+	asm volatile("mrrc p15, 0, %0, %1, c14" : "=r"(Lo), "=r"(Hi));
+	Result = ((u64)Hi << 32) | Lo;
+
+	return Result;
+}
+
+inline static u32 ReadCpuFrequency(void)
+{
+	register u32 Result;
+
+	asm volatile("mrc p15, 0, %0, c14, c0, 0" : "=r"(Result));
+
+	return Result;
+}
+#endif
+
+static void BusyWaitMsCpu(unsigned int Millis)
+{
+	u64 Now;
+	u64 Start = ReadCpuCounter();
+	u64 Frequency = ReadCpuFrequency();
+	u64 Counts = ((Frequency / 1000) * Millis) / 1000;
+	while((Now = ReadCpuCounter()) - Start < Counts)
+	{
+		// Do nothing
+	}
+}
 
 static unsigned
 FormatStringArgs(char* Buffer, unsigned Length, const char* Format, va_list Args)

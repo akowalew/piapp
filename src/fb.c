@@ -1,7 +1,8 @@
-u32 FBWidth, FBHeight, FBPitch, FBRGB;
-u8* FBBuffer, *FBData;
+u32 FbWidth, FbHeight, FbPitch, FbRGB, FbSize;
+u8* FbBuffer, *FbData;
+b32 FbSwap;
 
-static b32 FBInit(void)
+static b32 FbInit(void)
 {
 	b32 Result = 0;
 
@@ -56,11 +57,14 @@ static b32 FBInit(void)
 		if(Mbox[20] == 32 && Mbox[28])
 		{
 			Mbox[28] &= 0x3FFFFFFF;
-			FBWidth = Mbox[5];
-			FBHeight = Mbox[6];
-			FBPitch = Mbox[33];
-			FBRGB = Mbox[24];
-			FBData = FBBuffer = (void*)((u64)Mbox[28]);
+			FbWidth = Mbox[5];
+			FbHeight = Mbox[6];
+			FbPitch = Mbox[33];
+			FbRGB = Mbox[24];
+			FbBuffer = (void*)((unsigned)Mbox[28]);
+			FbSize = FbHeight * FbPitch;
+			FbData = FbBuffer + FbSize;
+			FbSwap = 0;
 			Result = 1;
 		}
 	}
@@ -68,7 +72,7 @@ static b32 FBInit(void)
 	return Result;
 }
 
-static b32 FBSetVirtualOffset(u32 X, u32 Y)
+static b32 FbSetVirtualOffset(u32 X, u32 Y)
 {
 	b32 Result = 0;
 
@@ -88,40 +92,39 @@ static b32 FBSetVirtualOffset(u32 X, u32 Y)
 	return Result;
 }
 
+static void FbWaitForVerticalSync(void)
+{
+    Mbox[0] = 7 * 4;
+    Mbox[1] = MBOX_REQUEST;
+    Mbox[2] = MBOX_TAG_FRAMEBUFFER_SET_VSYNC;
+    Mbox[3] = 1 * 4;
+    Mbox[4] = 0;
+    Mbox[5] = 0;
+    Mbox[6] = MBOX_TAG_LAST;
+    MboxCallForever(MBOX_CH_PROP);
+}
+
+static void FbSyncAndSwapBuffers(void)
+{
+	FbSetVirtualOffset(0, FbSwap ? 0 : FbHeight);
+	FbWaitForVerticalSync();
+	FbData = FbSwap ? &FbBuffer[FbSize] : &FbBuffer[0];
+	FbSwap = !FbSwap;
+}
+
 static void  __attribute__((optimize("-O4"))) FillRectangle(u32 X1, u32 Y1, u32 X2, u32 Y2, u32 Color)
 {
-	u8* Row = FBData + Y1 * FBPitch + X1 * 4;
+	u8* Row = FbData + Y1 * FbPitch + X1 * 4;
 
 	for(u32 Y = Y1; Y <= Y2; Y++)
 	{
-		u32* At = (u32*) Row;
-
-		for(u32 X = X1; X <= X2; X++)
+		u32* restrict At = (u32*) Row;
+		u32* restrict End = ((u32*) Row) + (X2 - X1);
+		while(At != End)
 		{
 			*(At++) = Color;
 		}
 
-		Row += FBPitch;
+		Row += FbPitch;
 	}
-}
-
-#include "assets/homer.h"
-
-static void FBTest(void)
-{
-    u32 x,y;
-    unsigned char *ptr=FBData;
-    char *data=(void*)homer_data, pixel[4];
-
-    ptr += (FBHeight-homer_height)/2*FBPitch + (FBWidth-homer_width)*2;
-    for(y=0;y<homer_height;y++) {
-        for(x=0;x<homer_width;x++) {
-            HEADER_PIXEL(data, pixel);
-            // the image is in RGB. So if we have an RGB framebuffer, we can copy the pixels
-            // directly, but for BGR we must swap R (pixel[0]) and B (pixel[2]) channels.
-            *((unsigned int*)ptr)=FBRGB ? *((unsigned int *)&pixel) : (unsigned int)(pixel[0]<<16 | pixel[1]<<8 | pixel[2]);
-            ptr+=4;
-        }
-        ptr+=FBPitch-homer_width*4;
-    }
 }
