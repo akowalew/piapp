@@ -79,23 +79,34 @@ int main(void)
 	i32 Delta = 111;
 	u32 X = 0;
 	u32 Y = 0;
-	u32 Color = 127;
-	i32 DeltaColor = 1;
+	i32 Color = 127;
+	i32 DeltaColor = 3;
 
 	PrintClocks();
+
+	u32 Time = 0;
 
 	while(1)
 	{
 		u64 Begin = GetSystemTimer();
 
-		FillRectangle(0, 0, FbWidth-1, FbHeight-1, 0);
-		FillRectangle(0, 0, FbWidth-1, FbHeight-1, Color);
-
+#if 1
+		FbFill(0);
+		FbFill(Color);
 		Color += DeltaColor;
-		if(Color == 255 || Color == 0)
+		if(Color > 255)
 		{
+			Color = 255;
 			DeltaColor = -DeltaColor;
 		}
+		else if(Color < 0)
+		{
+			Color = 0;
+			DeltaColor = -DeltaColor;
+		}
+#else
+		NiceGradient(Time++);
+#endif
 
 		// ConsolePrintf("Hello world: %d\n", Counter++);
 		// BusyWaitUs(1000000);
@@ -107,8 +118,8 @@ int main(void)
 		// }
 
 		u64 End = GetSystemTimer();
-		u64 Diff = (End - Begin);
-		ConsolePrintf("Diff: %uus\n", (u32)Diff);
+		u32 Diff = (u32)(End - Begin) / 1000;
+		ConsolePrintf("Diff: %ums %ufps\n", Diff, (u32)(1000.f / Diff));
 
 		FbSyncAndSwapBuffers();
 	}

@@ -12,6 +12,9 @@ typedef int32_t i32;
 typedef int16_t i16;
 typedef int8_t i8;
 
+typedef float f32;
+typedef double f64;
+
 typedef u32 b32;
 
 #define Aligned(x) __attribute__((aligned(x)))

@@ -40,6 +40,19 @@ reset_handler:
     orr r0, r0, #(1 << 12)
     mcr p15, 0, r0, c1, c0, 0
 
+    // Enable FPU
+    mrc p15, 0, r0, c1, c0, 2
+    orr r0, #0xF00000
+    mcr p15, 0, r0, c1, c0, 2
+    mov r0, #0x40000000
+    fmxr fpexc, r0
+
+    // Enable flush to zero and disable FP traps
+    fmrx r0, fpscr
+    orr r0, #0x01000000
+    bic r0, #0x9F00
+    fmxr fpscr, r0
+
 zero_bss:
     ldr r0, =_sbss
     ldr r1, =_ebss

@@ -128,3 +128,118 @@ static void  __attribute__((optimize("-O4"))) FillRectangle(u32 X1, u32 Y1, u32 
 		Row += FbPitch;
 	}
 }
+
+#if 0
+static void __attribute__((optimize("-O2"))) NiceGradient(u32 Time)
+{
+	u8* Row = FbData;
+
+	u8 P1[] = {0x00, 0x00, 0xFF};
+	u8 P2[] = {0x00, 0xFF, 0x00};
+	u8 P3[] = {0xFF, 0x00, 0x00};
+	u8 P4[] = {0xFF, 0xFF, 0x00};
+
+	f32 InvHeight = 1.f / FbHeight;
+	f32 InvWidth = 1.f / FbWidth;
+
+	f32 DP12[] =
+	{
+		(P2[0]-P1[0]) * InvHeight,
+		(P2[1]-P1[1]) * InvHeight,
+		(P2[2]-P1[2]) * InvHeight,
+	};
+
+	f32 DP34[] =
+	{
+		(P4[0]-P3[0]) * InvHeight,
+		(P4[1]-P3[1]) * InvHeight,
+		(P4[2]-P3[2]) * InvHeight,
+	};
+
+	f32 K[] =
+	{
+		DP34[0]-DP12[0],
+		DP34[1]-DP12[1],
+		DP34[2]-DP12[2],
+	};
+
+	f32 L[] =
+	{
+		P3[0] - P1[0],
+		P3[1] - P1[1],
+		P3[2] - P1[2],
+	};
+
+	for(u32 Y = 0; Y < FbHeight; Y++)
+	{
+		u32* At = (u32*) Row;
+
+		f32 Q1[] =
+		{
+			Y*DP12[0] + P1[0],
+			Y*DP12[1] + P1[1],
+			Y*DP12[2] + P1[2],
+		};
+
+		f32 DQ[] =
+		{
+			(Y*K[0] + L[0]) * InvWidth,
+			(Y*K[1] + L[1]) * InvWidth,
+			(Y*K[2] + L[2]) * InvWidth,
+		};
+
+		for(u32 X = 0; X < FbWidth; X++)
+		{
+			u8 V[] =
+			{
+				(u8)(X*DQ[0] + Q1[0]),
+				(u8)(X*DQ[1] + Q1[1]),
+				(u8)(X*DQ[2] + Q1[2]),
+			};
+
+			*(At++) = (V[0] << 16) | (V[1] << 8) | V[2];
+		}
+
+		Row += FbPitch;
+	}
+}
+#else
+static void __attribute__((optimize("-O2"))) NiceGradient(u32 Time)
+{
+	u8* Row = FbData;
+
+	u32 Width = FbWidth/2;
+	for(u32 Y = 0; Y < FbHeight; Y++)
+	{
+		u64* Col = (u64*) Row;
+
+		for(u32 X = 0; X < Width; X++)
+		{
+			*(Col++) = (0x00FF00FFULL << 32) | 0x00FF00FF;
+		}
+
+		Row += FbPitch;
+	}
+}
+#endif
+
+static void __attribute__((optimize("-O2"))) FbFill(u32 Color)
+{
+	u8* Row = FbData;
+
+	u32 Width = FbWidth/2/3;
+	u64 Value = (((u64) Color) << 32) | Color;
+
+	for(u32 Y = 0; Y < FbHeight; Y++)
+	{
+		u64* Col = (u64*) Row;
+		for(u32 X = 0; X < Width; X++)
+		{
+			*(Col++) = Value;
+			*(Col++) = Value;
+			*(Col++) = Value;
+		}
+
+		Row += FbPitch;
+	}
+}

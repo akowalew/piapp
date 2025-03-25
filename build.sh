@@ -1,9 +1,9 @@
 #!/bin/sh
 
 DFLAGS="$DFLAGS -D__FPU_PRESENT=1"
-CFLAGS="$CFLAGS -marm -march=armv6 -mtune=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard"
+CFLAGS="$CFLAGS -marm -march=armv6 -ffast-math  -mtune=arm1176jzf-s -mfpu=vfp -mfloat-abi=hard"
 GFLAGS="$GFLAGS -gdwarf-2 -g3"
-OFLAGS="$OFLAGS -O0 -ffreestanding -nostartfiles -nostdlib -ffunction-sections -fdata-sections -static"
+OFLAGS="$OFLAGS -O0 -ffreestanding -nostartfiles -ffunction-sections -fdata-sections -static"
 WFLAGS="$WFLAGS -Wall -Wextra -Werror -Wfatal-errors -Wundef -Wshadow"
 XFLAGS="$XFLAGS -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-overlength-strings"
 LFLAGS="$LFLAGS -Wl,-Tbcm2835_link.ld -Wl,-Map=out/kernel.map -Wl,--gc-sections"
