@@ -56,7 +56,9 @@ Safely remove SD card and plug it into Raspberry Pi. Power cycle the board.
 
 Optionally you can connect also TTL-UART-3V3 cable to see debug console.
 
-It is helpful especially when debugging the `bootcode.bin` as it prints into UART. Connect it into GPIO14 (UART TX) and GPIO15 (UART RX)
+It is helpful especially when debugging the `bootcode.bin` as it prints into UART. 
+
+Connect UART cable into GPIO14 (UART TX) and GPIO15 (UART RX).
 
 When such cable is connected the `bootcode.bin` should print about reading our stuff:
 
@@ -93,7 +95,7 @@ Possibly there will be no further console logs, since the app is simple and only
 
 I am using Ozone for debugging. Version 3.34 since newer versions have some bug inside which causes dramatic slowdown when debugging.
 
-1. Simply open Ozone, New Project Wizard, select Cortex A53 as a device, select Cortex-A54 (AArch64) as a register set, peripherals you can omit.
+1. Simply open Ozone, New Project Wizard, select Cortex A53 as a device, select Cortex-A53 (AArch64) as a register set, peripherals you can omit.
 2. Then select Target Interface JTAG, leave default speed at 4MHz, Host Interface USB.
 3. Select `kernel8.elf` file which is created in `out` directory after build.
 4. Initial PC "Do not set", Initial Stack Pointer "Do not set", choose `jlinkscript` from this directory as a "J-Link Script File" (that's very important!)
