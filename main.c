@@ -1,5 +1,12 @@
+char Character;
 int main(void)
 {
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	asm("nop");
+	asm("nop");
 	asm("nop");
 	asm("nop");
 	asm("nop");
@@ -11,7 +18,10 @@ int main(void)
 		asm("nop");
 		asm("nop");
 		asm("nop");
-		char Character;
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
 		Character = 'x';
 	}
 }

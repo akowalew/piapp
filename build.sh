@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DFLAGS="$DFLAGS -D__FPU_PRESENT=1 "
-CFLAGS="$CFLAGS -march=armv8-a+nosimd -mtune=cortex-a53 -gdwarf-2 -g3"
+CFLAGS="$CFLAGS -march=armv8-a+nosimd -mtune=cortex-a53 -gdwarf-2 -gstrict-dwarf -fvar-tracking"
 OFLAGS="$OFLAGS -O0 -ffreestanding -nostdlib -ffunction-sections -fdata-sections -static"
 WFLAGS="$WFLAGS -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Wundef -Wshadow"
 XFLAGS="$XFLAGS -Wno-unused-function -Wno-unused-variable -Wno-unused-parameter -Wno-unused-but-set-variable -Wno-overlength-strings"
