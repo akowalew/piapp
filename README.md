@@ -8,7 +8,7 @@ Bare metal experiments on Raspberry Pi 3B+
 1. Grab an MicroSD card (8GB is fine, but basically any size will be good since things are extremely small)
 2. Format it to be completely empty, delete all volumes, create MS-DOS partition table
 3. Create one partition to fill whole MicroSD card and format it to FAT32
-4. Download x86_64 Linux hosted cross tolchains for AArch64 bare-metal target version 14.2.1: https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz and install it, add it to PATH
+4. Download x86_64 Linux hosted cross tolchains for AArch64 bare-metal target version 14.2.1: https://developer.arm.com/-/media/Files/downloads/gnu/14.2.rel1/binrel/arm-gnu-toolchain-14.2.rel1-x86_64-aarch64-none-elf.tar.xz and install it, add it to PATH  (basically every AArch64 toolchain should be fine)
 5. Verify toolchain by calling: `aarch64-none-elf-gcc -v`, which should print in the end the version 14.2.1
 
 ## JTAG
@@ -97,8 +97,8 @@ I am using Ozone for debugging. Version 3.34 since newer versions have some bug 
 
 1. Simply open Ozone, New Project Wizard, select Cortex A53 as a device, select Cortex-A53 (AArch64) as a register set, peripherals you can omit.
 2. Then select Target Interface JTAG, leave default speed at 4MHz, Host Interface USB.
-3. Select `kernel8.elf` file which is created in `out` directory after build.
-4. Initial PC "Do not set", Initial Stack Pointer "Do not set", choose `jlinkscript` from this directory as a "J-Link Script File" (that's very important!)
+3. Select `out/kernel8.elf` file which is created after build.
+4. Initial PC "Do not set", Initial Stack Pointer "Do not set", choose `jlinkscript` from this directory as a "J-Link Script File" (that's *very* important!!!)
 5. Start debugging and have fun
 6. Each time you call `build.sh` the Ozone will detect changes in `kernel8.elf` and reload the program in the RaspberryPi automatically.
 
