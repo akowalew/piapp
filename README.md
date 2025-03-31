@@ -15,14 +15,18 @@ Bare metal experiments on Raspberry Pi 3B+
 
 Connect J-Link (in my case PLUS Compact) into Raspberry PI JTAG pins configured by default into ALT4 mode:
 
-JLINK #1  VCC  - RPI 3V3 Power (#1, #17)
-JLINK #3  TRST - RPI GPIO 22 (TRST ALT4, #15)
-JLINK #5  TDI  - RPI GPIO 26 (TDI ALT4, #37)
-JLINK #7  TMS  - RPI GPIO 27 (TMS ALT4, #13)
-JLINK #9  TCLK - RPI GPIO 25 (TCK ALT4, #22)
-JLINK #11 RTCK - RPI GPIO 23 (RTCK ALT4, #16)
-JLINK #13 TDO  - RPI GPIO 24 (TDO ALT4, #18)
-JLINK #16 GND  - RPI Ground (#6, #39, #9, #14, #20, #30, #34, #25)
+```
+- JLINK #1  VCC  - RPI 3V3 Power (#1, #17)
+- JLINK #3  TRST - RPI GPIO 22 (TRST ALT4, #15)
+- JLINK #5  TDI  - RPI GPIO 26 (TDI ALT4, #37)
+- JLINK #7  TMS  - RPI GPIO 27 (TMS ALT4, #13)
+- JLINK #9  TCLK - RPI GPIO 25 (TCK ALT4, #22)
+- JLINK #11 RTCK - RPI GPIO 23 (RTCK ALT4, #16)
+- JLINK #13 TDO  - RPI GPIO 24 (TDO ALT4, #18)
+- JLINK #16 GND  - RPI Ground (#6, #39, #9, #14, #20, #30, #34, #25)
+```
+
+As you see JTAG `RESET` pin is not connected because RPi doesn't have one.
 
 ## Building
 
