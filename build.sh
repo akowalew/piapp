@@ -9,6 +9,5 @@ LFLAGS="$LFLAGS -Wl,-Tlink.ld -Wl,--gc-sections -Wl,--no-warn-rwx-segments -Wl,-
 
 mkdir -p out
 aarch64-none-elf-gcc main.c start.S -o out/kernel8.elf $DFLAGS $CFLAGS $OFLAGS $WFLAGS $XFLAGS $LFLAGS
-if [ "$1" = "--full" ]; then
-	aarch64-none-elf-objcopy -O binary out/kernel8.elf tftp/kernel8.img
-fi
+aarch64-none-elf-objcopy -O binary out/kernel8.elf tftp/kernel8.img
+echo "Success"

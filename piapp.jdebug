@@ -4,8 +4,8 @@
 *                         www.segger.com                             *
 **********************************************************************
 
-File          : /$(ProjectDir)/piapp.jdebug
-Created       : 26 Feb 2025 11:15
+File          : piapp.jdebug
+Created       : 31 Mar 2025 14:25
 Ozone Version : V3.34
 */
 
@@ -23,13 +23,11 @@ void OnProjectLoad (void) {
   // Dialog-generated settings
   //
   Project.SetDevice ("Cortex-A53");
-  Project.SetHostIF ("USB", "852005481");
+  Project.SetHostIF ("USB", "");
   Project.SetTargetIF ("JTAG");
-  Project.SetTIFSpeed ("15 MHz");
-  Project.SetJLinkScript ("/$(ProjectDir)/jlinkscript");
-  Project.AddPathSubstitute ("/$(ProjectDir)", "$(ProjectDir)");
+  Project.SetTIFSpeed ("4 MHz");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-A53_AArch64.svd");
-  Project.SetJLinkLogFile ("/$(ProjectDir)/out/jlinklog");
+  Project.SetJLinkScript ("jlinkscript");
   //
   // User settings
   //
@@ -325,29 +323,8 @@ void AfterTargetDownload (void) {
 **********************************************************************
 */
 void _SetupTarget(void) {
-  // U64 PC;
-  // int ElfClass;
-
-  // ElfClass = Elf.GetFileClass();
-  // //
-  // // Set up entry point PC
-  // //
-  // PC = Elf.GetEntryPointPC();
-  // if (PC != 0xFFFFFFFFFFFFFFFF) {
-  //   if (ElfClass == ELF_CLASS_64) {
-  //     //
-  //     // AArch64
-  //     //
-  //     Target.SetReg("PC", PC);
-  //   } else if (ElfClass == ELF_CLASS_32) {
-  //     //
-  //     // AArch32
-  //     //
-  //     Target.SetReg("R15 (PC)", PC);
-  //   } else {
-  //     Util.Error("Project script error: failed to set up initial PC", 1);
-  //   }
-  // } else {
-  //   Util.Error("Project script error: failed to set up initial PC", 1);
-  // }
+  //
+  // this function is intentionally empty because both inital PC and
+  // initial SP were chosen not to be set
+  //
 }
